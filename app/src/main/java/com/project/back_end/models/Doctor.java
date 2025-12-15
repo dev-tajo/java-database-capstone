@@ -25,6 +25,17 @@ public class Doctor {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(nullable = false)
     private Long id;
+
+    // 'username' field:
+//    - Type: private String
+//    - Description:
+//      - Represents the username of the doctor.
+//      - Used to log into the system.
+//      - @NotNull validation ensures that this field cannot be null when creating or updating a doctor.
+    @NotBlank(message = "username ist erforderlich")
+    @Column(unique = true)
+    private String username;
+
     // 2. 'name' field:
 //    - Type: private String
 //    - Description:
@@ -33,7 +44,6 @@ public class Doctor {
 //      - The @Size(min = 3, max = 100) annotation ensures that the name length is between 3 and 100 characters.
 //      - Provides validation for correct input and user experience.
     @NotBlank(message = "name ist erforderlich, darf nicht leer bleiben")
-    @Column(unique = true)
     @Size(min = 3, max = 100, message = "name soll mindestens 3, maximal 100 Zeichen haben")
     private String name;
     // 3. 'specialty' field:
