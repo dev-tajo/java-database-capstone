@@ -1,9 +1,11 @@
 package com.project.back_end.models;
 
 import jakarta.persistence.Id;
-import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.Size;
+import jakarta.validation.constraints.*;
 import org.springframework.data.mongodb.core.mapping.Document;
+
+import java.time.LocalDate;
+import java.util.Objects;
 
 
 // @Document annotation:
@@ -66,6 +68,9 @@ public class Prescription {
     @Size(max = 200, message = "doctorNotes soll 200 Zeichen nicht überschreiten")
     private String doctorNotes;
 
+    @NotNull(message = "prescriptionDate ist erforderlich")
+    private LocalDate prescriptionDate;
+
 // 7. Constructors:
 //    - The class includes a no-argument constructor (default constructor) and a parameterized constructor that initializes the fields: patientName, medication, dosage, doctorNotes, and appointmentId.
 
@@ -73,11 +78,12 @@ public class Prescription {
     }
 
     public Prescription(String patientName, Long appointmentId, String medication, String dosage, String doctorNotes) {
-        this.patientName = patientName;
-        this.appointmentId = appointmentId;
-        this.medication = medication;
-        this.dosage = dosage;
-        this.doctorNotes = doctorNotes;
+        setPatientName(patientName);
+        setAppointmentId(appointmentId);
+        setMedication(medication);
+        setDosage(dosage);
+        setDoctorNotes(doctorNotes);
+        setPrescriptionDate(LocalDate.now());
     }
 
 // 8. Getters and Setters:
@@ -126,5 +132,13 @@ public class Prescription {
 
     public void setDoctorNotes(String doctorNotes) {
         this.doctorNotes = doctorNotes;
+    }
+
+    public LocalDate getPrescriptionDate() {
+        return prescriptionDate;
+    }
+
+    public void setPrescriptionDate(LocalDate prescriptionDate) {
+        this.prescriptionDate = Objects.requireNonNullElseGet(prescriptionDate, LocalDate::now);
     }
 }
