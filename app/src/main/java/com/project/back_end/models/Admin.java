@@ -1,9 +1,9 @@
 package com.project.back_end.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.*;
-import org.hibernate.validator.constraints.UniqueElements;
 
 
 // @Entity annotation:
@@ -11,7 +11,7 @@ import org.hibernate.validator.constraints.UniqueElements;
 //    - It is required for persistence frameworks like Hibernate to map the class to a database table.
 
 @Entity
-@Access(AccessType.FIELD)
+@Access(AccessType.PROPERTY)
 public class Admin {
 
     // 1. 'id' field:
@@ -43,6 +43,7 @@ public class Admin {
 //      - @NotNull validation ensures the password cannot be null when creating or updating an Admin.
     @NotNull(message = "password darf nicht leer sein")
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
+    @JsonIgnore
     private String password;
 
     // 4. Constructor(s):
@@ -52,8 +53,8 @@ public class Admin {
     }
 
     public Admin(String username, String password) {
-        this.username = username;
-        this.password = password;
+        setUsername(username);
+        setPassword(password);
     }
 
 // 5. Getters and Setters:

@@ -2,7 +2,7 @@ package com.project.back_end.models;
 
 
 import jakarta.persistence.*;
-import jakarta.validation.constraints.Future;
+import jakarta.validation.constraints.FutureOrPresent;
 import jakarta.validation.constraints.NotNull;
 
 import java.time.Duration;
@@ -15,7 +15,7 @@ import java.time.LocalTime;
 //    - Marks the class as a JPA entity, meaning it represents a table in the database.
 //    - Required for persistence frameworks (e.g., Hibernate) to map the class to a database table.
 @Entity
-@Access(AccessType.FIELD)
+@Access(AccessType.PROPERTY)
 public class Appointment {
 
     public static final int APPOINTMENT_DEFAULT_ONE_HOUR_IN_MINUTES = 60;
@@ -58,7 +58,7 @@ public class Appointment {
 //      - Represents the date and time when the appointment is scheduled to occur.
 //      - The @Future annotation ensures that the appointment time is always in the future when the appointment is created.
 //      - It uses LocalDateTime, which includes both the date and time for the appointment.
-    @Future(message = "appointmentTime muss in der Zukunft liegen")
+    @FutureOrPresent(message = "appointmentTime muss mindestens die aktuelle Zeit sein oder in der Zukunft liegen")
     private LocalDateTime appointmentTime;
 
     @NotNull(message = "appointmentDuration ist erforderlich")
@@ -81,15 +81,15 @@ public class Appointment {
     }
 
     public Appointment(Doctor doctor, Patient patient, LocalDateTime appointmentTime, Duration appointmentDuration, int status) {
-        this.doctor = doctor;
-        this.patient = patient;
-        this.appointmentTime = appointmentTime;
+        setDoctor(doctor);
+        setPatient(patient);
+        setAppointmentTime(appointmentTime);
         if (appointmentDuration != Duration.ZERO) {
-            this.appointmentDuration = appointmentDuration;
+            setAppointmentDuration(appointmentDuration);
         } else {
-            this.appointmentDuration = Duration.ofMinutes(APPOINTMENT_DEFAULT_ONE_HOUR_IN_MINUTES);
+            setAppointmentDuration(Duration.ofMinutes(APPOINTMENT_DEFAULT_ONE_HOUR_IN_MINUTES));
         }
-        this.status = status;
+        setStatus(status);
     }
 
     // 6. 'getEndTime' method:

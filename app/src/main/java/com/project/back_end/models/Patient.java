@@ -1,6 +1,7 @@
 package com.project.back_end.models;
 
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.*;
@@ -11,18 +12,19 @@ import jakarta.validation.constraints.*;
 //    - Required for persistence frameworks (e.g., Hibernate) to map the class to a database table.
 
 @Entity
-@Access(AccessType.FIELD)
+@Access(AccessType.PROPERTY)
 public class Patient {
 
     protected Patient() {
     }
 
-    public Patient(String name, String email, String password, String phone, String address) {
-        this.name = name;
-        this.email = email;
-        this.password = password;
-        this.phone = phone;
-        this.address = address;
+    public Patient(String username, String name, String email, String password, String phone, String address) {
+        setUsername(username);
+        setName(name);
+        setEmail(email);
+        setPassword(password);
+        setPhone(phone);
+        setAddress(address);
     }
 
     // 1. 'id' field:
@@ -77,6 +79,7 @@ public class Patient {
     @NotNull(message = "password ist erforderlich, darf nicht leer bleiben")
     @Size(min = 6, message = "password soll mindestens 6 Zeichen haben")
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
+    @JsonIgnore
     private String password;
 
 // 5. 'phone' field:
@@ -105,6 +108,14 @@ public class Patient {
 
     public Long getId() {
         return id;
+    }
+
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
     }
 
     public String getName() {

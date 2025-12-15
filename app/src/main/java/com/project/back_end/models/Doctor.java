@@ -1,5 +1,6 @@
 package com.project.back_end.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.*;
@@ -12,7 +13,7 @@ import java.util.List;
 //    - Required for persistence frameworks (e.g., Hibernate) to map the class to a database table.
 
 @Entity
-@Access(AccessType.FIELD)
+@Access(AccessType.PROPERTY)
 public class Doctor {
 
     // 1. 'id' field:
@@ -74,6 +75,7 @@ public class Doctor {
     @NotNull(message = "password ist erforderlich, darf nicht leer bleiben")
     @Size(min = 6, message = "password soll mindestens 6 Zeichen haben")
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
+    @JsonIgnore
     private String password;
     // 6. 'phone' field:
 //    - Type: private String
@@ -93,13 +95,14 @@ public class Doctor {
     @ElementCollection
     private List<String> availableTimes;
 
-    public Doctor(String name, String speciality, String email, String password, String phone, List<String> availableTimes) {
-        this.name = name;
-        this.speciality = speciality;
-        this.email = email;
-        this.password = password;
-        this.phone = phone;
-        this.availableTimes = availableTimes;
+    public Doctor(String username, String name, String speciality, String email, String password, String phone, List<String> availableTimes) {
+        setUsername(username);
+        setName(name);
+        setSpeciality(speciality);
+        setEmail(email);
+        setPassword(password);
+        setPhone(phone);
+        setAvailableTimes(availableTimes);
     }
 
     protected Doctor() {
@@ -111,6 +114,14 @@ public class Doctor {
 
     public Long getId() {
         return id;
+    }
+
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
     }
 
     public String getName() {
