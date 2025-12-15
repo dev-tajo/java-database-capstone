@@ -33,6 +33,7 @@ public class Doctor {
 //      - The @Size(min = 3, max = 100) annotation ensures that the name length is between 3 and 100 characters.
 //      - Provides validation for correct input and user experience.
     @NotBlank(message = "name ist erforderlich, darf nicht leer bleiben")
+    @Column(unique = true)
     @Size(min = 3, max = 100, message = "name soll mindestens 3, maximal 100 Zeichen haben")
     private String name;
     // 3. 'specialty' field:

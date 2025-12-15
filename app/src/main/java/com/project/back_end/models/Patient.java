@@ -45,6 +45,7 @@ public class Patient {
 //      - Provides validation for correct input and user experience.
     @NotBlank(message = "name ist erforderlich, soll nicht leer sein")
     @Size(min = 3, max = 100, message = "name soll mindestens 3, maximal 100 Zeichen haben")
+    @Column(unique = true)
     private String name;
 
     // 3. 'email' field:

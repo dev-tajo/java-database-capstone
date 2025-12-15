@@ -2,8 +2,7 @@ package com.project.back_end.models;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.*;
 import org.hibernate.validator.constraints.UniqueElements;
 
 
@@ -33,7 +32,7 @@ public class Admin {
 //      - Used to log into the system.
 //      - @NotNull validation ensures that this field cannot be null when creating or updating an Admin.
     @NotBlank(message = "username ist erforderlich")
-    @UniqueElements(message = "username muss eindeutig sein")
+    @Column(unique = true)
     private String username;
 
     // 3. 'password' field:
