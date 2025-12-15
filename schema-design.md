@@ -4,89 +4,98 @@
 
 #### Table: Admins
 
-| Spaltenname     | Datentyp         | Einschränkungen                |
-|-----------------|------------------|--------------------------------|
-| AdminID         | INT              | PRIMARY KEY, AUTO_INCREMENT    |
-| Username        | VARCHAR(63)      | NOT NULL                       |
-| Email           | VARCHAR(126)     | UNIQUE                         |
-| Permissions     | BIT(16)          |                                |
+| Spaltenname | Datentyp     | Einschränkungen             |
+|-------------|--------------|-----------------------------|
+| id          | BIGINT       | PRIMARY KEY, AUTO_INCREMENT |
+| username    | VARCHAR(63)  | NOT EMPTY, UNIQUE           |
+| password    | VARCHAR(126) | NOT EMPTY                   |
+| email       | VARCHAR(126) | NOT EMPTY                   |
+| phone       | VARCHAR(31)  |                             |
+| permissions | BIT(16)      |                             |
 
 ##### Beschreibung
-- **AdminID**: Eindeutige Identifikation des Admin in der Datenbank.
-- **FirstName**: Vorname des Admin.
-- **LastName**: Nachname des Admin.
-- **PhoneNumber**: Telefonnummer des Admin.
-- **Email**: eMail-Adresse des Admin.
-- **Permissions**: Rechte des Admin. (tbd.)
+- **id**: Eindeutige Identifikation in der Datenbanktabelle.
+- **username**: eindeutiger Nutzername.
+- **password**: (gehashtes) Passwort. 
+- **email**: eMail-Adresse.
+- **phone**: Telefonnummer.
+- **permissions**: Rechte. (tbd.)
 
 
 #### Table: Doctors
 
-| Spaltenname     | Datentyp         | Einschränkungen                |
-|-----------------|------------------|--------------------------------|
-| DoctorID        | INT              | PRIMARY KEY, AUTO_INCREMENT    |
-| FirstName       | VARCHAR(63)      | NOT NULL                       |
-| LastName        | VARCHAR(63)      | NOT NULL                       |
-| AcademicDegree  | VARCHAR(31)      |                                |
-| MedicalLicense  | VARCHAR(126)     |                                |
-| Specialty       | VARCHAR(254)     |                                |
-| PhoneNumber     | VARCHAR(31)      |                                |
-| Email           | VARCHAR(126)     | UNIQUE                         |
+| Spaltenname     | Datentyp     | Einschränkungen             |
+|-----------------|--------------|-----------------------------|
+| id              | BIGINT       | PRIMARY KEY, AUTO_INCREMENT |
+| username        | VARCHAR(63)  | NOT EMPTY, UNIQUE           |
+| password        | VARCHAR(126) | NOT EMPTY                   |
+| email           | VARCHAR(126) | NOT EMPTY                   |
+| phone           | VARCHAR(31)  |                             |
+| name            | VARCHAR(126) | NOT EMPTY                   |
+| academic_degree | VARCHAR(31)  |                             |
+| medical_license | VARCHAR(126) |                             |
+| specialty       | VARCHAR(254) |                             |
 
 ##### Beschreibung
-- **DoctorID**: Eindeutige Identifikation des Arztes in der Datenbank.
-- **FirstName**: Vorname des Arztes.
-- **LastName**: Nachname des Arztes.
-- **AcademicDegree**: Akademischer Grad, z.B. "Dr. med.".
-- **MedicalLicense**: Approbation, z.B. "Arzt" oder "Psychotherapeut".
-- **Specialty**: Spezialisierung, z.B. "Allgemeinmedizin" oder "Chirurg".
-- **PhoneNumber**: Telefonnummer des Arztes.
-- **Email**: eMail-Adresse des Arztes.
+- **id**: Eindeutige Identifikation in der Datenbanktabelle.
+- **username**: eindeutiger Nutzername.
+- **password**: (gehashtes) Passwort.
+- **email**: eMail-Adresse.
+- **phone**: Telefonnummer.
+- **name**: Name
+- **academic_degree**: Akademischer Grad, z.B. "Dr. med.".
+- **medical_license**: Approbation, z.B. "Arzt" oder "Psychotherapeut".
+- **specialty**: Spezialisierung, z.B. "Allgemeinmedizin" oder "Chirurg".
 
 
 #### Table: Patients
 
-| Spaltenname     | Datentyp         | Einschränkungen                |
-|-----------------|------------------|--------------------------------|
-| PatientID       | INT              | PRIMARY KEY, AUTO_INCREMENT    |
-| FirstName       | VARCHAR(63)      | NOT NULL                       |
-| LastName        | VARCHAR(63)      | NOT NULL                       |
-| DateOfBirth     | DATE             | NOT NULL                       |
-| PhoneNumber     | VARCHAR(31)      |                                |
-| Email           | VARCHAR(126)     | UNIQUE                         |
+| Spaltenname   | Datentyp     | Einschränkungen             |
+|---------------|--------------|-----------------------------|
+| id            | BIGINT       | PRIMARY KEY, AUTO_INCREMENT |
+| username      | VARCHAR(63)  | NOT EMPTY, UNIQUE           |
+| password      | VARCHAR(126) | NOT EMPTY                   |
+| email         | VARCHAR(126) | NOT EMPTY                   |
+| phone         | VARCHAR(31)  |                             |
+| first_name    | VARCHAR(63)  | NOT EMPTY                   |
+| last_name     | VARCHAR(63)  | NOT EMPTY                   |
+| date_of_birth | DATE         | NOT NULL                    |
 
 ##### Beschreibung
-- **PatientID**: Eindeutige Identifikation des Patienten in der Datenbank.
-- **FirstName**: Vorname des Patienten.
-- **LastName**: Nachname des Patienten.
-- **DateOfBirth**: Geburtsdatum des Patienten.
-- **PhoneNumber**: Telefonnummer des Patienten.
-- **Email**: eMail-Adresse des Patienten.
+- **id**: Eindeutige Identifikation in der Datenbanktabelle.
+- **username**: eindeutiger Nutzername.
+- **password**: (gehashtes) Passwort.
+- **email**: eMail-Adresse.
+- **phone**: Telefonnummer.
+- **first_name**: Vorname.
+- **last_name**: Nachname.
+- **date_of_birth**: Geburtsdatum.
 
 
 #### Table: Appointments
 
-| Spaltenname     | Datentyp         | Einschränkungen                |
-|-----------------|------------------|--------------------------------|
-| AppointmentID   | INT              | PRIMARY KEY, AUTO_INCREMENT    |
-| PatientID       | INT              | NOT NULL, FOREIGN KEY REFERENCES Patients(PatientID) |
-| DoctorID        | INT              | NOT NULL, FOREIGN KEY REFERENCES Doctors(DoctorID)   |
-| AppointmentDateFrom | DATETIME     | NOT NULL                       |
-| AppointmentDateTo | DATETIME       | NOT NULL                       |
-| Reason          | VARCHAR(255)     |                                |
-| Result          | VARCHAR(255)     |                                |
-| Status          | ENUM('Scheduled', 'Completed', 'Cancelled') | NOT NULL, DEFAULT 'Scheduled' |
+| Spaltenname           | Datentyp                                    | Einschränkungen                               |
+|-----------------------|---------------------------------------------|-----------------------------------------------|
+| id                    | BIGINT                                      | PRIMARY KEY, AUTO_INCREMENT                   |
+| patient_fk            | BIGINT                                      | NOT NULL, FOREIGN KEY REFERENCES Patients(id) |
+| doctor_fk             | BIGINT                                      | NOT NULL, FOREIGN KEY REFERENCES Doctors(id)  |
+| appointment_date_from | DATETIME                                    | NOT NULL                                      |
+| appointment_duration  | TIME                                        | NOT NULL, DEFAULT('1:0:0')                    |
+| reason                | VARCHAR(255)                                |                                               |
+| result                | VARCHAR(255)                                |                                               |
+| status                | ENUM('Scheduled', 'Completed', 'Cancelled') | NOT NULL, DEFAULT 'Scheduled'                 |
 
 ##### Beschreibung
-- **AppointmentID**: Eindeutige Identifikation für jeden Termin.
-- **PatientID**: Verweist auf die PatientID in der Tabelle `Patients`, um die Beziehung zwischen Terminen und Patient herzustellen.
-- **DoctorID**: Verweist auf die DoctorID in der Tabelle `Doctors`, um die Beziehung zwischen Terminen und Arzt herzustellen.
-- **AppointmentDateFrom**: Das Datum und die Uhrzeit des Termins (geplanter Beginn).
-- **AppointmentDateTo**: Das Datum und die Uhrzeit des Termins (geplantes Ende).
-- **Reason**: Falls im Vorfeld bekannt, das geplante Thema der Konsultation.
-- **Result**: Das Ergebnis der Konsultation: z.B. Diagnose, Handlungsempfehlungen, ggf. geplante Wiedervorstellung.
-- **Status**: ENUM-Datentyp: es sind nur die Werte 'Scheduled', 'Completed' oder 'Cancelled' erlaubt.
-
+- **id**: Eindeutige Identifikation für jeden Termin.
+- **patient_fk**: Verweist auf die PatientID in der Tabelle `Patients`, um die Beziehung zwischen Terminen und Patient
+  herzustellen.
+- **doctor_fk**: Verweist auf die DoctorID in der Tabelle `Doctors`, um die Beziehung zwischen Terminen und Arzt
+  herzustellen.
+- **appointment_date_from**: Das Datum und die Uhrzeit des Termins (geplanter Beginn).
+- **appointment_duration**: Die (geplante) Dauer des Termins.
+- **reason**: Falls im Vorfeld bekannt, das geplante Thema der Konsultation.
+- **result**: Das Ergebnis der Konsultation: z.B. Diagnose, Handlungsempfehlungen, ggf. geplante Wiedervorstellung.
+- **status**: ENUM-Datentyp: es sind nur die Werte 'Scheduled', 'Completed' oder 'Cancelled' erlaubt.
 
 
 ## MongoDB Collection Design
@@ -95,9 +104,9 @@
 ```json
 {
   "_id": "ObjectId",
-  "patientID": "ObjectId",
+  "patientId": "ObjectId",
   "patientName": "String",
-  "doctorID" : "ObjectID",
+  "doctorId" : "ObjectId",
   "appointmentId": "ObjectId",
   "prescriptionDate": "date",
   "prescription": {
@@ -118,8 +127,8 @@
   },
   "doctorNotes": "String",
   "required": [
-    "patientID",
-    "doctorID",
+    "patientId",
+    "doctorId",
     "prescriptionDate",
     "prescription"
   ]
