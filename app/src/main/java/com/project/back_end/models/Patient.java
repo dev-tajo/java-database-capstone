@@ -6,6 +6,8 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.*;
 
+import java.time.LocalDate;
+
 
 // @Entity annotation:
 //    - Marks the class as a JPA entity, meaning it represents a table in the database.
@@ -18,12 +20,13 @@ public class Patient {
     protected Patient() {
     }
 
-    public Patient(String username, String name, String email, String password, String phone, String address) {
+    public Patient(String username, String email, String password, String phone, String firstName, String lastName, LocalDate dateOfBirth, String address) {
         setUsername(username);
-        setName(name);
         setEmail(email);
         setPassword(password);
         setPhone(phone);
+        setFirstName(firstName);
+        setLastName(lastName);
         setAddress(address);
     }
 
@@ -48,28 +51,6 @@ public class Patient {
     @Column(unique = true)
     private String username;
 
-    // 2. 'name' field:
-//    - Type: private String
-//    - Description:
-//      - Represents the patient's full name.
-//      - The @NotNull annotation ensures that the patient's name is required.
-//      - The @Size(min = 3, max = 100) annotation ensures that the name length is between 3 and 100 characters. 
-//      - Provides validation for correct input and user experience.
-    @NotBlank(message = "name ist erforderlich, soll nicht leer sein")
-    @Size(min = 3, max = 100, message = "name soll mindestens 3, maximal 100 Zeichen haben")
-    @Column(unique = true)
-    private String name;
-
-    // 3. 'email' field:
-//    - Type: private String
-//    - Description:
-//      - Represents the patient's email address.
-//      - The @NotNull annotation ensures that an email address must be provided.
-//      - The @Email annotation validates that the email address follows a valid email format (e.g., patient@example.com).
-    @NotBlank(message = "email ist erforderlich, darf nicht leer bleiben")
-    @Email(message = "email soll eine gültige Mail-Adresse sein")
-    private String email;
-
     // 4. 'password' field:
 //    - Type: private String
 //    - Description:
@@ -82,7 +63,17 @@ public class Patient {
     @JsonIgnore
     private String password;
 
-// 5. 'phone' field:
+    // 3. 'email' field:
+//    - Type: private String
+//    - Description:
+//      - Represents the patient's email address.
+//      - The @NotNull annotation ensures that an email address must be provided.
+//      - The @Email annotation validates that the email address follows a valid email format (e.g., patient@example.com).
+    @NotBlank(message = "email ist erforderlich, darf nicht leer bleiben")
+    @Email(message = "email soll eine gültige Mail-Adresse sein")
+    private String email;
+
+    // 5. 'phone' field:
 //    - Type: private String
 //    - Description:
 //      - Represents the patient's phone number.
@@ -92,7 +83,33 @@ public class Patient {
     @Pattern(regexp = "^[0-9]{10}$", message = "phone soll exakt 10 Ziffern haben" )
     private String phone;
 
-// 6. 'address' field:
+    // 2. 'firstName' field:
+//    - Type: private String
+//    - Description:
+//      - Represents the patient's first name.
+//      - The @NotNull annotation ensures that the patient's name is required.
+//      - The @Size(min = 3, max = 100) annotation ensures that the first name length is between 3 and 50 characters.
+//      - Provides validation for correct input and user experience.
+    @NotBlank(message = "firstName ist erforderlich, soll nicht leer sein")
+    @Size(min = 3, max = 50, message = "firstName soll mindestens 3, maximal 50 Zeichen haben")
+    private String firstName;
+
+    // 'lastName' field:
+//    - Type: private String
+//    - Description:
+//      - Represents the patient's last name.
+//      - The @NotNull annotation ensures that the patient's name is required.
+//      - The @Size(min = 3, max = 100) annotation ensures that the last name length is between 3 and 50 characters.
+//      - Provides validation for correct input and user experience.
+    @NotBlank(message = "lastName ist erforderlich, soll nicht leer sein")
+    @Size(min = 3, max = 50, message = "lastName soll mindestens 3, maximal 50 Zeichen haben")
+    private String lastName;
+
+    @NotNull(message = "dateOfBirth ist erforderlich")
+    @Past(message = "dateOfBirth soll in der Vergangenheit liegen")
+    private LocalDate dateOfBirth;
+
+    // 6. 'address' field:
 //    - Type: private String
 //    - Description:
 //      - Represents the patient's address.
@@ -118,13 +135,17 @@ public class Patient {
         this.username = username;
     }
 
-    public String getName() {
-        return name;
+    public String getFirstName() {
+        return firstName;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
     }
+
+    public String getLastName() { return lastName; }
+
+    public void setLastName(String lastName) { this.lastName = lastName; }
 
     public String getEmail() {
         return email;

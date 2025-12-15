@@ -46,15 +46,24 @@ public class Admin {
     @JsonIgnore
     private String password;
 
+    @NotBlank(message = "email ist erforderlich, darf nicht leer bleiben")
+    @Email(message = "email soll eine gültige Mail-Adresse sein")
+    private String email;
+
+    @Pattern(regexp = "^[0-9]{3,10}$", message = "phone soll mindestens 3, maximal 10 Ziffern haben")
+    private String phone;
+
     // 4. Constructor(s):
 //    - A no-argument constructor is implicitly provided, required by JPA for entity creation.
 //    - A parameterized constructor can be added as needed.
     protected Admin() {
     }
 
-    public Admin(String username, String password) {
+    public Admin(String username, String password, String email, String phone) {
         setUsername(username);
         setPassword(password);
+        setEmail(email);
+        setPhone(phone);
     }
 
 // 5. Getters and Setters:
@@ -78,5 +87,21 @@ public class Admin {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public String getPhone() {
+        return phone;
+    }
+
+    public void setPhone(String phone) {
+        this.phone = phone;
     }
 }

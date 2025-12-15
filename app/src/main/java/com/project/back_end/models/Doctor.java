@@ -37,34 +37,6 @@ public class Doctor {
     @Column(unique = true)
     private String username;
 
-    // 2. 'name' field:
-//    - Type: private String
-//    - Description:
-//      - Represents the doctor's name.
-//      - The @NotNull annotation ensures that the doctor's name is required.
-//      - The @Size(min = 3, max = 100) annotation ensures that the name length is between 3 and 100 characters.
-//      - Provides validation for correct input and user experience.
-    @NotBlank(message = "name ist erforderlich, darf nicht leer bleiben")
-    @Size(min = 3, max = 100, message = "name soll mindestens 3, maximal 100 Zeichen haben")
-    private String name;
-    // 3. 'specialty' field:
-//    - Type: private String
-//    - Description:
-//      - Represents the medical specialty of the doctor.
-//      - The @NotUVEX Hose 98098Null annotation ensures that a specialty must be provided.
-//      - The @Size(min = 3, max = 50) annotation ensures that the specialty name is between 3 and 50 characters long.
-    @NotBlank(message = "specialty ist erforderlich, darf nicht leer bleiben")
-    @Size(min = 3, max = 100, message = "specialty soll mindestens 3, maximal 50 Zeichen haben")
-    private String speciality;
-    // 4. 'email' field:
-//    - Type: private String
-//    - Description:
-//      - Represents the doctor's email address.
-//      - The @NotNull annotation ensures that an email address is required.
-//      - The @Email annotation validates that the email address follows a valid email format (e.g., doctor@example.com).
-    @NotBlank(message = "email ist erforderlich, darf nicht leer bleiben")
-    @Email(message = "email soll eine gültige Mail-Adresse sein")
-    private String email;
     // 5. 'password' field:
 //    - Type: private String
 //    - Description:
@@ -77,6 +49,17 @@ public class Doctor {
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     @JsonIgnore
     private String password;
+
+    // 4. 'email' field:
+//    - Type: private String
+//    - Description:
+//      - Represents the doctor's email address.
+//      - The @NotNull annotation ensures that an email address is required.
+//      - The @Email annotation validates that the email address follows a valid email format (e.g., doctor@example.com).
+    @NotBlank(message = "email ist erforderlich, darf nicht leer bleiben")
+    @Email(message = "email soll eine gültige Mail-Adresse sein")
+    private String email;
+
     // 6. 'phone' field:
 //    - Type: private String
 //    - Description:
@@ -86,6 +69,34 @@ public class Doctor {
     @NotNull(message = "phone ist erforderlich, darf nicht leer bleiben")
     @Pattern(regexp = "^[0-9]{10}$", message = "phone soll exakt 10 Ziffern haben")
     private String phone;
+
+    // 2. 'name' field:
+//    - Type: private String
+//    - Description:
+//      - Represents the doctor's name.
+//      - The @NotNull annotation ensures that the doctor's name is required.
+//      - The @Size(min = 3, max = 100) annotation ensures that the name length is between 3 and 100 characters.
+//      - Provides validation for correct input and user experience.
+    @NotBlank(message = "name ist erforderlich, darf nicht leer bleiben")
+    @Size(min = 3, max = 100, message = "name soll mindestens 3, maximal 100 Zeichen haben")
+    private String name;
+
+    @Size(min = 2, max = 30, message = "academicDegree soll mindestens 2, maximal 30 Zeichen haben")
+    private String academicDegree;
+
+    @Size(max = 125, message = "academicDegree soll maximal 125 Zeichen haben")
+    private String medicalLicense;
+
+    // 3. 'specialty' field:
+//    - Type: private String
+//    - Description:
+//      - Represents the medical specialty of the doctor.
+//      - The @NotUVEX Hose 98098Null annotation ensures that a specialty must be provided.
+//      - The @Size(min = 3, max = 50) annotation ensures that the specialty name is between 3 and 50 characters long.
+    @NotBlank(message = "specialty ist erforderlich, darf nicht leer bleiben")
+    @Size(min = 3, max = 100, message = "specialty soll mindestens 3, maximal 50 Zeichen haben")
+    private String speciality;
+
     // 7. 'availableTimes' field:
 //    - Type: private List<String>
 //    - Description:
@@ -95,13 +106,16 @@ public class Doctor {
     @ElementCollection
     private List<String> availableTimes;
 
-    public Doctor(String username, String name, String speciality, String email, String password, String phone, List<String> availableTimes) {
+    public Doctor(String username, String password, String email, String phone, String name,
+                  String academicDegree, String medicalLicense, String speciality, List<String> availableTimes) {
         setUsername(username);
-        setName(name);
-        setSpeciality(speciality);
-        setEmail(email);
         setPassword(password);
+        setEmail(email);
         setPhone(phone);
+        setName(name);
+        setAcademicDegree(academicDegree);
+        setMedicalLicense(medicalLicense);
+        setSpeciality(speciality);
         setAvailableTimes(availableTimes);
     }
 
@@ -170,6 +184,22 @@ public class Doctor {
 
     public void setAvailableTimes(List<String> availableTimes) {
         this.availableTimes = availableTimes;
+    }
+
+    public String getAcademicDegree() {
+        return academicDegree;
+    }
+
+    public void setAcademicDegree(String academicDegree) {
+        this.academicDegree = academicDegree;
+    }
+
+    public String getMedicalLicense() {
+        return medicalLicense;
+    }
+
+    public void setMedicalLicense(String medicalLicense) {
+        this.medicalLicense = medicalLicense;
     }
 }
 

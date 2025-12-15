@@ -4,6 +4,7 @@ package com.project.back_end.models;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.FutureOrPresent;
 import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
 
 import java.time.Duration;
 import java.time.LocalDate;
@@ -19,6 +20,9 @@ import java.time.LocalTime;
 public class Appointment {
 
     public static final int APPOINTMENT_DEFAULT_ONE_HOUR_IN_MINUTES = 60;
+    public static final int STATUS_SCHEDULED = 0;
+    public static final int STATUS_COMPLETED = 1;
+    public static final int STATUS_CANCELLED = 2;
 
     // 1. 'id' field:
 //    - Type: private Long
@@ -64,6 +68,12 @@ public class Appointment {
     @NotNull(message = "appointmentDuration ist erforderlich")
     private Duration appointmentDuration;
 
+    @Size(max = 254, message = "reason soll maximal 254 Zeichen enthalten")
+    private String reason;
+
+    @Size(max = 254, message = "result soll maximal 254 zeichen enthalten")
+    private String result;
+
     // 5. 'status' field:
 //    - Type: private int
 //    - Description:
@@ -80,7 +90,7 @@ public class Appointment {
     protected Appointment() {
     }
 
-    public Appointment(Doctor doctor, Patient patient, LocalDateTime appointmentTime, Duration appointmentDuration, int status) {
+    public Appointment(Doctor doctor, Patient patient, LocalDateTime appointmentTime, Duration appointmentDuration, String reason, String result, int status) {
         setDoctor(doctor);
         setPatient(patient);
         setAppointmentTime(appointmentTime);
@@ -89,6 +99,8 @@ public class Appointment {
         } else {
             setAppointmentDuration(Duration.ofMinutes(APPOINTMENT_DEFAULT_ONE_HOUR_IN_MINUTES));
         }
+        setReason(reason);
+        setResult(result);
         setStatus(status);
     }
 
@@ -161,12 +173,44 @@ public class Appointment {
         this.appointmentDuration = appointmentDuration;
     }
 
+    public String getReason() {
+        return reason;
+    }
+
+    public void setReason(String reason) {
+        this.reason = reason;
+    }
+
+    public String getResult() {
+        return result;
+    }
+
+    public void setResult(String result) {
+        this.result = result;
+    }
+
     public int getStatus() {
         return status;
     }
 
     public void setStatus(int status) {
         this.status = status;
+    }
+
+    public void setStatus(String status) {
+        switch(status) {
+            case "Scheduled":
+                this.status = STATUS_SCHEDULED;
+                break;
+            case "Completed":
+                this.status = STATUS_COMPLETED;
+                break;
+            case "Cancelled":
+                this.status = STATUS_CANCELLED;
+                break;
+            default:
+                throw new IllegalArgumentException("unknown status value: " + status);
+        }
     }
 }
 
