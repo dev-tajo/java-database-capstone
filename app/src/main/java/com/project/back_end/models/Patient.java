@@ -36,7 +36,17 @@ public class Patient {
     @Column(nullable = false)
     private Long id;
 
-// 2. 'name' field:
+    // 'username' field:
+//    - Type: private String
+//    - Description:
+//      - Represents the username of the patient.
+//      - Used to log into the system.
+//      - @NotNull validation ensures that this field cannot be null when creating or updating a patient.
+    @NotBlank(message = "username ist erforderlich")
+    @Column(unique = true)
+    private String username;
+
+    // 2. 'name' field:
 //    - Type: private String
 //    - Description:
 //      - Represents the patient's full name.
