@@ -11,7 +11,6 @@
 | password    | VARCHAR(126) | NOT EMPTY                   |
 | email       | VARCHAR(126) | NOT EMPTY                   |
 | phone       | VARCHAR(31)  |                             |
-| permissions | BIT(16)      |                             |
 
 ##### Beschreibung
 - **id**: Eindeutige Identifikation in der Datenbanktabelle.
@@ -19,7 +18,6 @@
 - **password**: (gehashtes) Passwort. 
 - **email**: eMail-Adresse.
 - **phone**: Telefonnummer.
-- **permissions**: Rechte. (tbd.)
 
 
 #### Table: Doctors
@@ -60,6 +58,7 @@
 | first_name    | VARCHAR(63)  | NOT EMPTY                   |
 | last_name     | VARCHAR(63)  | NOT EMPTY                   |
 | date_of_birth | DATE         | NOT NULL                    |
+| address       | VARCHAR(254) | NOT EMPTY                   |
 
 ##### Beschreibung
 - **id**: Eindeutige Identifikation in der Datenbanktabelle.
@@ -70,6 +69,7 @@
 - **first_name**: Vorname.
 - **last_name**: Nachname.
 - **date_of_birth**: Geburtsdatum.
+- **address**: Adresse.
 
 
 #### Table: Appointments
@@ -77,8 +77,8 @@
 | Spaltenname           | Datentyp                                    | Einschränkungen                               |
 |-----------------------|---------------------------------------------|-----------------------------------------------|
 | id                    | BIGINT                                      | PRIMARY KEY, AUTO_INCREMENT                   |
-| patient_fk            | BIGINT                                      | NOT NULL, FOREIGN KEY REFERENCES Patients(id) |
 | doctor_fk             | BIGINT                                      | NOT NULL, FOREIGN KEY REFERENCES Doctors(id)  |
+| patient_fk            | BIGINT                                      | NOT NULL, FOREIGN KEY REFERENCES Patients(id) |
 | appointment_date_from | DATETIME                                    | NOT NULL                                      |
 | appointment_duration  | TIME                                        | NOT NULL, DEFAULT('1:0:0')                    |
 | reason                | VARCHAR(255)                                |                                               |
@@ -87,9 +87,9 @@
 
 ##### Beschreibung
 - **id**: Eindeutige Identifikation für jeden Termin.
-- **patient_fk**: Verweist auf die PatientID in der Tabelle `Patients`, um die Beziehung zwischen Terminen und Patient
-  herzustellen.
 - **doctor_fk**: Verweist auf die DoctorID in der Tabelle `Doctors`, um die Beziehung zwischen Terminen und Arzt
+  herzustellen.
+- **patient_fk**: Verweist auf die PatientID in der Tabelle `Patients`, um die Beziehung zwischen Terminen und Patient
   herzustellen.
 - **appointment_date_from**: Das Datum und die Uhrzeit des Termins (geplanter Beginn).
 - **appointment_duration**: Die (geplante) Dauer des Termins.
