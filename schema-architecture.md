@@ -191,7 +191,7 @@ Datenfluss
 2. Ausgelöste Aktionen werden zu den zugehörigen Thymeleaf oder REST Controllern geroutet.
 3. Der jeweilige Controller ruft den Service-Layer auf.
 4. Der Service-Layer nutzt das zugehörige MySQL- oder MongoDB Repositoryum um die erforderlichen Daten an die MySQL- oder MongoDB Datenbank weiterzuleiten und oder von diesen abzufragen.
-5. MIt Hilfe der hinterlegten Modelle werden die Antwort-Daten generiert und aufbereitet und auf umgekehrtem Weg wieder an die darüberliegenden Schichten ausgeliefert.
+5. Mithilfe der hinterlegten Modelle werden die Antwort-Daten generiert und aufbereitet und auf umgekehrtem Weg wieder an die darüberliegenden Schichten ausgeliefert.
 6. Zuletzt werden die Ergebnisse in der Darstellung der Präsentationsschicht (Webseiten oder Apps) dargestellt (Änderung bzw. Darstellung der Ergebnis-Daten oder einer entsprechenden Fehlermeldung).
 
 Code Organsisation
