@@ -1,72 +1,216 @@
 package com.project.back_end.models;
 
-public class Appointment {
 
-  // @Entity annotation:
+import jakarta.persistence.*;
+import jakarta.validation.constraints.FutureOrPresent;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
+
+import java.time.Duration;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
+
+
+// @Entity annotation:
 //    - Marks the class as a JPA entity, meaning it represents a table in the database.
 //    - Required for persistence frameworks (e.g., Hibernate) to map the class to a database table.
+@Entity
+@Access(AccessType.PROPERTY)
+public class Appointment {
 
-// 1. 'id' field:
+    public static final int APPOINTMENT_DEFAULT_ONE_HOUR_IN_MINUTES = 60;
+    public static final int STATUS_SCHEDULED = 0;
+    public static final int STATUS_COMPLETED = 1;
+    public static final int STATUS_CANCELLED = 2;
+
+    // 1. 'id' field:
 //    - Type: private Long
 //    - Description:
 //      - Represents the unique identifier for each appointment.
 //      - The @Id annotation marks it as the primary key.
 //      - The @GeneratedValue(strategy = GenerationType.IDENTITY) annotation auto-generates the ID value when a new record is inserted into the database.
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(nullable = false)
+    private Long id;
 
-// 2. 'doctor' field:
+
+    // 2. 'doctor' field:
 //    - Type: private Doctor
 //    - Description:
 //      - Represents the doctor assigned to this appointment.
 //      - The @ManyToOne annotation defines the relationship, indicating many appointments can be linked to one doctor.
 //      - The @NotNull annotation ensures that an appointment must be associated with a doctor when created.
+    @ManyToOne
+    @NotNull(message = "doctor ist erforderlich")
+    private Doctor doctor;
 
-// 3. 'patient' field:
+    // 3. 'patient' field:
 //    - Type: private Patient
 //    - Description:
 //      - Represents the patient assigned to this appointment.
 //      - The @ManyToOne annotation defines the relationship, indicating many appointments can be linked to one patient.
 //      - The @NotNull annotation ensures that an appointment must be associated with a patient when created.
+    @ManyToOne
+    @NotNull(message = "patient ist erforderlich")
+    private Patient patient;
 
-// 4. 'appointmentTime' field:
+    // 4. 'appointmentTime' field:
 //    - Type: private LocalDateTime
 //    - Description:
 //      - Represents the date and time when the appointment is scheduled to occur.
 //      - The @Future annotation ensures that the appointment time is always in the future when the appointment is created.
 //      - It uses LocalDateTime, which includes both the date and time for the appointment.
+    @FutureOrPresent(message = "appointmentTime muss mindestens die aktuelle Zeit sein oder in der Zukunft liegen")
+    private LocalDateTime appointmentTime;
 
-// 5. 'status' field:
+    @NotNull(message = "appointmentDuration ist erforderlich")
+    private Duration appointmentDuration;
+
+    @Size(max = 254, message = "reason soll maximal 254 Zeichen enthalten")
+    private String reason;
+
+    @Size(max = 254, message = "result soll maximal 254 zeichen enthalten")
+    private String result;
+
+    // 5. 'status' field:
 //    - Type: private int
 //    - Description:
 //      - Represents the current status of the appointment. It is an integer where:
 //        - 0 means the appointment is scheduled.
 //        - 1 means the appointment has been completed.
 //      - The @NotNull annotation ensures that the status field is not null.
+    @NotNull(message = "status ist erforderlich")
+    private int status;
 
-// 6. 'getEndTime' method:
+    // 9. Constructor(s):
+//    - A no-argument constructor is implicitly provided by JPA for entity creation.
+//    - A parameterized constructor can be added as needed to initialize fields.
+    protected Appointment() {
+    }
+
+    public Appointment(Doctor doctor, Patient patient, LocalDateTime appointmentTime, Duration appointmentDuration, String reason, String result, int status) {
+        setDoctor(doctor);
+        setPatient(patient);
+        setAppointmentTime(appointmentTime);
+        if (appointmentDuration != Duration.ZERO) {
+            setAppointmentDuration(appointmentDuration);
+        } else {
+            setAppointmentDuration(Duration.ofMinutes(APPOINTMENT_DEFAULT_ONE_HOUR_IN_MINUTES));
+        }
+        setReason(reason);
+        setResult(result);
+        setStatus(status);
+    }
+
+    // 6. 'getEndTime' method:
 //    - Type: private LocalDateTime
 //    - Description:
 //      - This method is a transient field (not persisted in the database).
 //      - It calculates the end time of the appointment by adding one hour to the start time (appointmentTime).
 //      - It is used to get an estimated appointment end time for display purposes.
+    @Transient
+    private LocalDateTime getEndTime() {
+        return appointmentTime.plusSeconds(appointmentDuration.getSeconds());
+    }
 
-// 7. 'getAppointmentDate' method:
+    // 7. 'getAppointmentDate' method:
 //    - Type: private LocalDate
 //    - Description:
 //      - This method extracts only the date part from the appointmentTime field.
 //      - It returns a LocalDate object representing just the date (without the time) of the scheduled appointment.
+    @Transient
+    private LocalDate getAppointmentDate() {
+        return appointmentTime.toLocalDate();
+    }
 
-// 8. 'getAppointmentTimeOnly' method:
+    // 8. 'getAppointmentTimeOnly' method:
 //    - Type: private LocalTime
 //    - Description:
 //      - This method extracts only the time part from the appointmentTime field.
 //      - It returns a LocalTime object representing just the time (without the date) of the scheduled appointment.
+    @Transient
+    private LocalTime getAppointmentTimeOnly() {
+        return appointmentTime.toLocalTime();
+    }
 
-// 9. Constructor(s):
-//    - A no-argument constructor is implicitly provided by JPA for entity creation.
-//    - A parameterized constructor can be added as needed to initialize fields.
-
-// 10. Getters and Setters:
+    // 10. Getters and Setters:
 //    - Standard getter and setter methods are provided for accessing and modifying the fields: id, doctor, patient, appointmentTime, status, etc.
+    public Long getId() {
+        return id;
+    }
 
+    public Doctor getDoctor() {
+        return doctor;
+    }
+
+    public void setDoctor(Doctor doctor) {
+        this.doctor = doctor;
+    }
+
+    public Patient getPatient() {
+        return patient;
+    }
+
+    public void setPatient(Patient patient) {
+        this.patient = patient;
+    }
+
+    public LocalDateTime getAppointmentTime() {
+        return appointmentTime;
+    }
+
+    public void setAppointmentTime(LocalDateTime appointmentTime) {
+        this.appointmentTime = appointmentTime;
+    }
+
+    public Duration getAppointmentDuration() {
+        return appointmentDuration;
+    }
+
+    public void setAppointmentDuration(Duration appointmentDuration) {
+        this.appointmentDuration = appointmentDuration;
+    }
+
+    public String getReason() {
+        return reason;
+    }
+
+    public void setReason(String reason) {
+        this.reason = reason;
+    }
+
+    public String getResult() {
+        return result;
+    }
+
+    public void setResult(String result) {
+        this.result = result;
+    }
+
+    public int getStatus() {
+        return status;
+    }
+
+    public void setStatus(int status) {
+        this.status = status;
+    }
+
+    public void setStatus(String status) {
+        switch(status) {
+            case "Scheduled":
+                this.status = STATUS_SCHEDULED;
+                break;
+            case "Completed":
+                this.status = STATUS_COMPLETED;
+                break;
+            case "Cancelled":
+                this.status = STATUS_CANCELLED;
+                break;
+            default:
+                throw new IllegalArgumentException("unknown status value: " + status);
+        }
+    }
 }
 

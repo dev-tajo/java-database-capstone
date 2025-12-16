@@ -1,65 +1,205 @@
 package com.project.back_end.models;
 
-public class Doctor {
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import jakarta.persistence.*;
+import jakarta.validation.constraints.*;
+
+import java.util.List;
+
 
 // @Entity annotation:
 //    - Marks the class as a JPA entity, meaning it represents a table in the database.
 //    - Required for persistence frameworks (e.g., Hibernate) to map the class to a database table.
 
-// 1. 'id' field:
+@Entity
+@Access(AccessType.PROPERTY)
+public class Doctor {
+
+    // 1. 'id' field:
 //    - Type: private Long
 //    - Description:
 //      - Represents the unique identifier for each doctor.
 //      - The @Id annotation marks it as the primary key.
 //      - The @GeneratedValue(strategy = GenerationType.IDENTITY) annotation auto-generates the ID value when a new record is inserted into the database.
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(nullable = false)
+    private Long id;
 
-// 2. 'name' field:
+    // 'username' field:
 //    - Type: private String
 //    - Description:
-//      - Represents the doctor's name.
-//      - The @NotNull annotation ensures that the doctor's name is required.
-//      - The @Size(min = 3, max = 100) annotation ensures that the name length is between 3 and 100 characters. 
-//      - Provides validation for correct input and user experience.
+//      - Represents the username of the doctor.
+//      - Used to log into the system.
+//      - @NotNull validation ensures that this field cannot be null when creating or updating a doctor.
+    @NotBlank(message = "username ist erforderlich")
+    @Column(unique = true)
+    private String username;
 
-
-// 3. 'specialty' field:
-//    - Type: private String
-//    - Description:
-//      - Represents the medical specialty of the doctor.
-//      - The @NotNull annotation ensures that a specialty must be provided.
-//      - The @Size(min = 3, max = 50) annotation ensures that the specialty name is between 3 and 50 characters long.
-
-// 4. 'email' field:
-//    - Type: private String
-//    - Description:
-//      - Represents the doctor's email address.
-//      - The @NotNull annotation ensures that an email address is required.
-//      - The @Email annotation validates that the email address follows a valid email format (e.g., doctor@example.com).
-
-// 5. 'password' field:
+    // 5. 'password' field:
 //    - Type: private String
 //    - Description:
 //      - Represents the doctor's password for login authentication.
 //      - The @NotNull annotation ensures that a password must be provided.
 //      - The @Size(min = 6) annotation ensures that the password must be at least 6 characters long.
 //      - The @JsonProperty(access = JsonProperty.Access.WRITE_ONLY) annotation ensures that the password is not serialized in the response (hidden from the frontend).
+    @NotNull(message = "password ist erforderlich, darf nicht leer bleiben")
+    @Size(min = 6, message = "password soll mindestens 6 Zeichen haben")
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
+    @JsonIgnore
+    private String password;
 
-// 6. 'phone' field:
+    // 4. 'email' field:
+//    - Type: private String
+//    - Description:
+//      - Represents the doctor's email address.
+//      - The @NotNull annotation ensures that an email address is required.
+//      - The @Email annotation validates that the email address follows a valid email format (e.g., doctor@example.com).
+    @NotBlank(message = "email ist erforderlich, darf nicht leer bleiben")
+    @Email(message = "email soll eine gültige Mail-Adresse sein")
+    private String email;
+
+    // 6. 'phone' field:
 //    - Type: private String
 //    - Description:
 //      - Represents the doctor's phone number.
-//      - The @NotNull annotation ensures that a phone number must be provided.
+//      - The @NotNull annotation ensures that a phone number mus@JsonProperty(access = JsonProperty.Access.WRITE_ONLY)t be provided.
 //      - The @Pattern(regexp = "^[0-9]{10}$") annotation validates that the phone number must be exactly 10 digits long.
+    @NotNull(message = "phone ist erforderlich, darf nicht leer bleiben")
+    @Pattern(regexp = "^[0-9]{10}$", message = "phone soll exakt 10 Ziffern haben")
+    private String phone;
 
-// 7. 'availableTimes' field:
+    // 2. 'name' field:
+//    - Type: private String
+//    - Description:
+//      - Represents the doctor's name.
+//      - The @NotNull annotation ensures that the doctor's name is required.
+//      - The @Size(min = 3, max = 100) annotation ensures that the name length is between 3 and 100 characters.
+//      - Provides validation for correct input and user experience.
+    @NotBlank(message = "name ist erforderlich, darf nicht leer bleiben")
+    @Size(min = 3, max = 100, message = "name soll mindestens 3, maximal 100 Zeichen haben")
+    private String name;
+
+    @Size(min = 2, max = 30, message = "academicDegree soll mindestens 2, maximal 30 Zeichen haben")
+    private String academicDegree;
+
+    @Size(max = 125, message = "academicDegree soll maximal 125 Zeichen haben")
+    private String medicalLicense;
+
+    // 3. 'specialty' field:
+//    - Type: private String
+//    - Description:
+//      - Represents the medical specialty of the doctor.
+//      - The @NotUVEX Hose 98098Null annotation ensures that a specialty must be provided.
+//      - The @Size(min = 3, max = 50) annotation ensures that the specialty name is between 3 and 50 characters long.
+    @NotBlank(message = "specialty ist erforderlich, darf nicht leer bleiben")
+    @Size(min = 3, max = 100, message = "specialty soll mindestens 3, maximal 50 Zeichen haben")
+    private String speciality;
+
+    // 7. 'availableTimes' field:
 //    - Type: private List<String>
 //    - Description:
 //      - Represents the available times for the doctor in a list of time slots.
 //      - Each time slot is represented as a string (e.g., "09:00-10:00", "10:00-11:00").
 //      - The @ElementCollection annotation ensures that the list of time slots is stored as a separate collection in the database.
+    @ElementCollection
+    private List<String> availableTimes;
+
+    public Doctor(String username, String password, String email, String phone, String name,
+                  String academicDegree, String medicalLicense, String speciality, List<String> availableTimes) {
+        setUsername(username);
+        setPassword(password);
+        setEmail(email);
+        setPhone(phone);
+        setName(name);
+        setAcademicDegree(academicDegree);
+        setMedicalLicense(medicalLicense);
+        setSpeciality(speciality);
+        setAvailableTimes(availableTimes);
+    }
+
+    protected Doctor() {
+    }
+
 
 // 8. Getters and Setters:
 //    - Standard getter and setter methods are provided for all fields: id, name, specialty, email, password, phone, and availableTimes.
 
+    public Long getId() {
+        return id;
+    }
+
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getSpeciality() {
+        return speciality;
+    }
+
+    public void setSpeciality(String speciality) {
+        this.speciality = speciality;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    public String getPhone() {
+        return phone;
+    }
+
+    public void setPhone(String phone) {
+        this.phone = phone;
+    }
+
+    public List<String> getAvailableTimes() {
+        return availableTimes;
+    }
+
+    public void setAvailableTimes(List<String> availableTimes) {
+        this.availableTimes = availableTimes;
+    }
+
+    public String getAcademicDegree() {
+        return academicDegree;
+    }
+
+    public void setAcademicDegree(String academicDegree) {
+        this.academicDegree = academicDegree;
+    }
+
+    public String getMedicalLicense() {
+        return medicalLicense;
+    }
+
+    public void setMedicalLicense(String medicalLicense) {
+        this.medicalLicense = medicalLicense;
+    }
 }
 
