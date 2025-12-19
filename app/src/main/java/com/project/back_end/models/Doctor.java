@@ -90,11 +90,11 @@ public class Doctor {
 //    - Type: private String
 //    - Description:
 //      - Represents the medical specialty of the doctor.
-//      - The @NotUVEX Hose 98098Null annotation ensures that a specialty must be provided.
+//      - The @NotNull annotation ensures that a specialty must be provided.
 //      - The @Size(min = 3, max = 50) annotation ensures that the specialty name is between 3 and 50 characters long.
     @NotBlank(message = "specialty ist erforderlich, darf nicht leer bleiben")
     @Size(min = 3, max = 100, message = "specialty soll mindestens 3, maximal 50 Zeichen haben")
-    private String speciality;
+    private String specialty;
 
     // 7. 'availableTimes' field:
 //    - Type: private List<String>
@@ -106,7 +106,7 @@ public class Doctor {
     private List<String> availableTimes;
 
     public Doctor(String username, String password, String email, String phone, String name,
-                  String academicDegree, String medicalLicense, String speciality, List<String> availableTimes) {
+                  String academicDegree, String medicalLicense, String specialty, List<String> availableTimes) {
         setUsername(username);
         setPassword(password);
         setEmail(email);
@@ -114,7 +114,7 @@ public class Doctor {
         setName(name);
         setAcademicDegree(academicDegree);
         setMedicalLicense(medicalLicense);
-        setSpeciality(speciality);
+        setSpecialty(specialty);
         setAvailableTimes(availableTimes);
     }
 
@@ -145,12 +145,12 @@ public class Doctor {
         this.name = name;
     }
 
-    public String getSpeciality() {
-        return speciality;
+    public String getSpecialty() {
+        return specialty;
     }
 
-    public void setSpeciality(String speciality) {
-        this.speciality = speciality;
+    public void setSpecialty(String specialty) {
+        this.specialty = specialty;
     }
 
     public String getEmail() {
