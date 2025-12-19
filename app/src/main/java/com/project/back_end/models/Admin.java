@@ -22,7 +22,6 @@ public class Admin {
 //      - It is the primary key of the entity, identified by @Id annotation.
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(nullable = false)
     private Long id;
 
     // 2. 'username' field:
