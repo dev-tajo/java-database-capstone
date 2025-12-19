@@ -14,7 +14,6 @@ import java.time.LocalDate;
 //    - Required for persistence frameworks (e.g., Hibernate) to map the class to a database table.
 
 @Entity
-@Access(AccessType.PROPERTY)
 public class Patient {
 
     protected Patient() {

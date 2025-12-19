@@ -16,7 +16,6 @@ import java.time.LocalTime;
 //    - Marks the class as a JPA entity, meaning it represents a table in the database.
 //    - Required for persistence frameworks (e.g., Hibernate) to map the class to a database table.
 @Entity
-@Access(AccessType.PROPERTY)
 public class Appointment {
 
     public static final int APPOINTMENT_DEFAULT_ONE_HOUR_IN_MINUTES = 60;
