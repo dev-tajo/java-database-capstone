@@ -53,7 +53,7 @@ public interface AppointmentRepository extends JpaRepository<Appointment, Long> 
 //      - This method retrieves all appointments for a specific patient.
 //      - Return type: List<Appointment>
 //      - Parameters: Long patientId
-    List<Appointment> findByPatientId(Long patientid);
+    List<Appointment> findByPatientId(Long patientId);
 
 //    - **findByPatient_IdAndStatusOrderByAppointmentTimeAsc**:
 //      - This method retrieves all appointments for a specific patient with a given status, ordered by the appointment time.
