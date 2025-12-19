@@ -19,13 +19,12 @@ public class Patient {
     protected Patient() {
     }
 
-    public Patient(String username, String email, String password, String phone, String firstName, String lastName, LocalDate dateOfBirth, String address) {
+    public Patient(String username, String email, String password, String phone, String name, LocalDate dateOfBirth, String address) {
         setUsername(username);
         setEmail(email);
         setPassword(password);
         setPhone(phone);
-        setFirstName(firstName);
-        setLastName(lastName);
+        setName(name);
         setAddress(address);
     }
 
@@ -82,27 +81,16 @@ public class Patient {
     @Pattern(regexp = "^[0-9]{10}$", message = "phone soll exakt 10 Ziffern haben" )
     private String phone;
 
-    // 2. 'firstName' field:
+    // 2. 'name' field:
 //    - Type: private String
 //    - Description:
-//      - Represents the patient's first name.
+//      - Represents the patient's name.
 //      - The @NotNull annotation ensures that the patient's name is required.
-//      - The @Size(min = 3, max = 100) annotation ensures that the first name length is between 3 and 50 characters.
+//      - The @Size(min = 3, max = 100) annotation ensures that the name length is between 3 and 100 characters.
 //      - Provides validation for correct input and user experience.
-    @NotBlank(message = "firstName ist erforderlich, soll nicht leer sein")
-    @Size(min = 3, max = 50, message = "firstName soll mindestens 3, maximal 50 Zeichen haben")
-    private String firstName;
-
-    // 'lastName' field:
-//    - Type: private String
-//    - Description:
-//      - Represents the patient's last name.
-//      - The @NotNull annotation ensures that the patient's name is required.
-//      - The @Size(min = 3, max = 100) annotation ensures that the last name length is between 3 and 50 characters.
-//      - Provides validation for correct input and user experience.
-    @NotBlank(message = "lastName ist erforderlich, soll nicht leer sein")
-    @Size(min = 3, max = 50, message = "lastName soll mindestens 3, maximal 50 Zeichen haben")
-    private String lastName;
+    @NotBlank(message = "name ist erforderlich, soll nicht leer sein")
+    @Size(min = 3, max = 100, message = "firstName soll mindestens 3, maximal 100 Zeichen haben")
+    private String name;
 
     @NotNull(message = "dateOfBirth ist erforderlich")
     @Past(message = "dateOfBirth soll in der Vergangenheit liegen")
@@ -134,17 +122,13 @@ public class Patient {
         this.username = username;
     }
 
-    public String getFirstName() {
-        return firstName;
+    public String getName() {
+        return name;
     }
 
-    public void setFirstName(String firstName) {
-        this.firstName = firstName;
+    public void setName(String firstName) {
+        this.name = firstName;
     }
-
-    public String getLastName() { return lastName; }
-
-    public void setLastName(String lastName) { this.lastName = lastName; }
 
     public String getEmail() {
         return email;
