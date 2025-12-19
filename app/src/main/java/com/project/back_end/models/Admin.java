@@ -11,7 +11,6 @@ import jakarta.validation.constraints.*;
 //    - It is required for persistence frameworks like Hibernate to map the class to a database table.
 
 @Entity
-@Access(AccessType.PROPERTY)
 public class Admin {
 
     // 1. 'id' field:

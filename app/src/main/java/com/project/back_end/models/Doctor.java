@@ -13,7 +13,6 @@ import java.util.List;
 //    - Required for persistence frameworks (e.g., Hibernate) to map the class to a database table.
 
 @Entity
-@Access(AccessType.PROPERTY)
 public class Doctor {
 
     // 1. 'id' field:
