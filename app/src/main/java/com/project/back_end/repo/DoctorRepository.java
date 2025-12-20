@@ -32,14 +32,14 @@ public interface DoctorRepository extends JpaRepository<Doctor, Long> {
 //      - The `CONCAT('%', :name, '%')` is used to create a pattern for partial matching.
 //      - Return type: List<Doctor>
 //      - Parameters: String name
-    List<Doctor> findByNamesLike(String name);
+    List<Doctor> findByNameLike(String name);
 
 //    - **findByNameContainingIgnoreCaseAndSpecialtyIgnoreCase**:
 //      - This method retrieves a list of Doctors where the name contains the search string (case-insensitive) and the specialty matches exactly (case-insensitive).
 //      - It combines both fields for a more specific search.
 //      - Return type: List<Doctor>
 //      - Parameters: String name, String specialty
-    List<Doctor> findByNameContainingIgnoreCaseAndSpecialtyIgnoreCase(String name, String speciality);
+    List<Doctor> findByNameContainingIgnoreCaseAndSpecialtyIgnoreCase(String name, String specialty);
 
 //    - **findBySpecialtyIgnoreCase**:
 //      - This method retrieves a list of Doctors with the specified specialty, ignoring case sensitivity.
