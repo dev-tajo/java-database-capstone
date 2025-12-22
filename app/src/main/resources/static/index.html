@@ -1,4 +1,45 @@
 <!-- index.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <!-- meta data and resources -->
+    <meta charset="UTF-8">
+    <title>Select your role in the Smart Clinic</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="Landing Page for Smart Clinic">
+    <link rel="icon" href="./assets/images/logo/logo.png" type="image/png">
+    <!-- stylesheets -->
+    <link rel="stylesheet" href="./assets/css/index.css">
+    <link rel="stylesheet" href="./assets/css/style.css">
+    <!-- utilities and components -->
+    <script src="./js/util.js" defer></script>
+    <script src="./js/render.js" defer></script>
+    <script src="./js/components/header.js" defer></script>
+    <script src="./js/components/footer.js" defer></script>
+</head>
+<body>
+    <div class="container">
+        <div class="wrapper">
+            <div id="header"></div>
+            <main class="main-content">
+                <h2>Select your role in the Smart Clinic</h2>
+                <button id="adminBtn" class="button" onclick="selectRole('admin')">Admin</button>
+                <button id="patientBtn" class="button" onclick="selectRole('patient')">Patient</button>
+                <button id="doctorBtn" class="button" onclick="selectRole('doctor')">Doctor</button>
+            </main>
+            <div id="footer"></div>
+        </div>
+    </div>
+    <div id="modal" class="modal">
+        <div class="modal-content">
+            <span class="close" id="closeModal">&times;</span>
+            <div class="modal-body"></div>
+        </div>
+
+    </div>
+    <script type="module" src="./js/services/index.js" defer></script>
+</body>
+</html>
 <!-- 
 
 Step-by-Step Explanation of `index.html`.
