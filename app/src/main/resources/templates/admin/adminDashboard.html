@@ -1,5 +1,70 @@
 <!-- adminDashboard.html -->
 
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Admin Dashboard</title>
+    <link rel="icon" type="image/png" th:href="@{/assets/images/logo/logo.png}" />
+    <link rel="stylesheet" th:href="@{/assets/css/adminDashboard.css}">
+    <link rel="stylesheet" th:href="@{/assets/css/style.css}">
+    <script th:src="@{/js/render.js}" defer></script>
+    <script th:src="@{/js/util.js}" defer></script>
+    <script type="module" th:src="@{/js/components/header.js}" defer></script>
+    <script type="module" th:src="@{/js/components/footer.js}" defer></script>
+    <script>
+        // Immediately clear from URL after loading
+        window.history.replaceState({}, document.title, window.location.pathname);
+    </script>
+</head>
+<body>
+<div class="container">
+    <div class="wrapper">
+        <div id="header"></div>
+        <main class="main-content">
+            <input type="text" id="searchBar" placeholder="search by doctor name" />
+            <div class="filter-section">
+                <select id="filterTime">
+                    <option value="">Filter by Time</option>
+                    <option value="AM">AM</option>
+                    <option value="PM">PM</option>
+                </select>
+                <select id="filterSpecialty">
+                    <option value="">Filter by Specialty</option>
+                    <option value="cardiologist">Cardiologist</option>
+                    <option value="dermatologist">Dermatologist</option>
+                    <option value="neurologist">Neurologist</option>
+                    <option value="pediatrician">Pediatrician</option>
+                    <option value="orthopedic">Orthopedic</option>
+                    <option value="gynecologist">Gynecologist</option>
+                    <option value="psychiatrist">Psychiatrist</option>
+                    <option value="dentist">Dentist</option>
+                    <option value="ophthalmologist">Ophthalmologist</option>
+                    <option value="ent">ENT Specialist</option>
+                    <option value="urologist">Urologist</option>
+                    <option value="oncologist">Oncologist</option>
+                    <option value="gastroenterologist">Gastroenterologist</option>
+                    <option value="general">General Physician</option>
+                </select>
+            </div>
+            <div id="content"></div>
+        </main>
+        <div id="footer"></div>
+    </div>
+</div>
+
+<div id="modal" class="modal">
+    <div class="modal-content">
+        <span id="closeModal" class="close">&times;</span>
+        <div id="modal-body"></div>
+    </div>
+</div>
+
+<script type="module" src="/js/adminDashboard.js" defer></script>
+<script type="module" src="/js/components/doctorCard.js" defer></script>
+</body>
+</html>
+
 <!-- 
 Step-by-Step Explanation of `adminDashboard.html`
 This file creates the Admin Dashboard interface for managing doctor-related data 
