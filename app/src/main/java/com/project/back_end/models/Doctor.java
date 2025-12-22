@@ -26,16 +26,6 @@ public class Doctor {
     @Column(nullable = false)
     private Long id;
 
-    // 'username' field:
-//    - Type: private String
-//    - Description:
-//      - Represents the username of the doctor.
-//      - Used to log into the system.
-//      - @NotNull validation ensures that this field cannot be null when creating or updating a doctor.
-    @NotBlank(message = "username ist erforderlich")
-    @Column(unique = true)
-    private String username;
-
     // 5. 'password' field:
 //    - Type: private String
 //    - Description:
@@ -57,6 +47,7 @@ public class Doctor {
 //      - The @Email annotation validates that the email address follows a valid email format (e.g., doctor@example.com).
     @NotBlank(message = "email ist erforderlich, darf nicht leer bleiben")
     @Email(message = "email soll eine gültige Mail-Adresse sein")
+    @Column(unique = true)
     private String email;
 
     // 6. 'phone' field:
@@ -105,11 +96,10 @@ public class Doctor {
     @ElementCollection
     private List<String> availableTimes;
 
-    public Doctor(String username, String password, String email, String phone, String name,
+    public Doctor(String email, String password, String phone, String name,
                   String academicDegree, String medicalLicense, String specialty, List<String> availableTimes) {
-        setUsername(username);
-        setPassword(password);
         setEmail(email);
+        setPassword(password);
         setPhone(phone);
         setName(name);
         setAcademicDegree(academicDegree);
@@ -127,14 +117,6 @@ public class Doctor {
 
     public Long getId() {
         return id;
-    }
-
-    public String getUsername() {
-        return username;
-    }
-
-    public void setUsername(String username) {
-        this.username = username;
     }
 
     public String getName() {
