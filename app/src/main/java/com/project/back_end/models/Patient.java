@@ -19,8 +19,7 @@ public class Patient {
     protected Patient() {
     }
 
-    public Patient(String username, String email, String password, String phone, String name, LocalDate dateOfBirth, String address) {
-        setUsername(username);
+    public Patient(String email, String password, String phone, String name, LocalDate dateOfBirth, String address) {
         setEmail(email);
         setPassword(password);
         setPhone(phone);
@@ -38,16 +37,6 @@ public class Patient {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(nullable = false)
     private Long id;
-
-    // 'username' field:
-//    - Type: private String
-//    - Description:
-//      - Represents the username of the patient.
-//      - Used to log into the system.
-//      - @NotNull validation ensures that this field cannot be null when creating or updating a patient.
-    @NotBlank(message = "username ist erforderlich")
-    @Column(unique = true)
-    private String username;
 
     // 4. 'password' field:
 //    - Type: private String
@@ -69,6 +58,7 @@ public class Patient {
 //      - The @Email annotation validates that the email address follows a valid email format (e.g., patient@example.com).
     @NotBlank(message = "email ist erforderlich, darf nicht leer bleiben")
     @Email(message = "email soll eine gültige Mail-Adresse sein")
+    @Column(unique = true)
     private String email;
 
     // 5. 'phone' field:
@@ -110,25 +100,11 @@ public class Patient {
 //    - Standard getter and setter methods are provided for all fields: id, name, email, password, phone, and address.
 //    - These methods allow access and modification of the fields of the Patient class.
 
-    public Long getId() {
-        return id;
-    }
+    public Long getId() { return id; }
 
-    public String getUsername() {
-        return username;
-    }
+    public String getName() { return name; }
 
-    public void setUsername(String username) {
-        this.username = username;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String firstName) {
-        this.name = firstName;
-    }
+    public void setName(String firstName) { this.name = firstName; }
 
     public String getEmail() {
         return email;

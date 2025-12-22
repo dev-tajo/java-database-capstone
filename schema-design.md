@@ -25,9 +25,8 @@
 | Spaltenname     | Datentyp     | Einschränkungen             |
 |-----------------|--------------|-----------------------------|
 | id              | BIGINT       | PRIMARY KEY, AUTO_INCREMENT |
-| username        | VARCHAR(63)  | NOT EMPTY, UNIQUE           |
+| email           | VARCHAR(126) | NOT EMPTY, UNIQUE           |
 | password        | VARCHAR(126) | NOT EMPTY                   |
-| email           | VARCHAR(126) | NOT EMPTY                   |
 | phone           | VARCHAR(31)  |                             |
 | name            | VARCHAR(126) | NOT EMPTY                   |
 | academic_degree | VARCHAR(31)  |                             |
@@ -36,9 +35,8 @@
 
 ##### Beschreibung
 - **id**: Eindeutige Identifikation in der Datenbanktabelle.
-- **username**: eindeutiger Nutzername.
-- **password**: (gehashtes) Passwort.
 - **email**: eMail-Adresse.
+- **password**: (gehashtes) Passwort.
 - **phone**: Telefonnummer.
 - **name**: Name
 - **academic_degree**: Akademischer Grad, z.B. "Dr. med.".
@@ -51,9 +49,8 @@
 | Spaltenname   | Datentyp     | Einschränkungen             |
 |---------------|--------------|-----------------------------|
 | id            | BIGINT       | PRIMARY KEY, AUTO_INCREMENT |
-| username      | VARCHAR(63)  | NOT EMPTY, UNIQUE           |
+| email         | VARCHAR(126) | NOT EMPTY, UNIQUE           |
 | password      | VARCHAR(126) | NOT EMPTY                   |
-| email         | VARCHAR(126) | NOT EMPTY                   |
 | phone         | VARCHAR(31)  |                             |
 | first_name    | VARCHAR(63)  | NOT EMPTY                   |
 | last_name     | VARCHAR(63)  | NOT EMPTY                   |
@@ -62,9 +59,8 @@
 
 ##### Beschreibung
 - **id**: Eindeutige Identifikation in der Datenbanktabelle.
-- **username**: eindeutiger Nutzername.
-- **password**: (gehashtes) Passwort.
 - **email**: eMail-Adresse.
+- **password**: (gehashtes) Passwort.
 - **phone**: Telefonnummer.
 - **first_name**: Vorname.
 - **last_name**: Nachname.
