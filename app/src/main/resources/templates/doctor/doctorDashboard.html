@@ -1,5 +1,71 @@
 <!-- doctorDashboard.html -->
 
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Doctor Dashboard</title>
+    <link rel="icon" type="image/png" th:href="@{/assets/images/logo/logo.png}" />
+    <link rel="stylesheet" th:href="@{/assets/css/adminDashboard.css}">
+    <link rel="stylesheet" th:href="@{/assets/css/doctorDashboard.css}">
+    <link rel="stylesheet" th:href="@{/assets/css/style.css}">
+    <script th:src="@{/js/util.js}" defer></script>
+    <script th:src="@{/js/render.js}" defer></script>
+    <script type="module" th:src="@{/js/components/header.js}" defer></script>
+    <script type="module" th:src="@{/js/components/footer.js}" defer></script>
+    <script type="module" th:src="@{/js/components/patientRows.js}" defer></script>
+    <script>
+        // Immediately clear from URL after loading
+        window.history.replaceState({}, document.title, window.location.pathname);
+    </script>
+</head>
+<body>
+<div class="container">
+    <div class="wrapper">
+        <div id="header"></div>
+        <main class="main-content">
+            <h1>Doctor Dashboard</h1>
+            <input type="text" id="searchBar" class="searchBar" placeholder="Search patients by name or ID" />
+            <div class="filters">
+                <button id="todayButton" class="dashboard-btn">Today's Appointments</button>
+                <input type="date" id="datePicker" class="date-filter" />
+            </div>
+            <div class="table-container">
+                <table id="patientTable">
+                    <thead>
+                    <tr>
+                        <th>Patient ID</th>
+                        <th>Name</th>
+                        <th>Phone</th>
+                        <th>Email</th>
+                        <th>Appointment Time</th>
+                        <th>Prescription</th>
+                    </tr>
+                    </thead>
+                    <tbody id="patientTableBody">
+                        <!-- for dynamic rows to insert -->
+                    </tbody>
+                </table>
+            </div>
+            <p id="noPatientRecord" class="no-patient-record-message" style="display:none;">No patient records found for the selected criteria.</p>
+        </main>
+        <div id="footer"></div>
+    </div>
+</div>
+
+<div id="modal" class="modal">
+    <div class="modal-content">
+        <span id="closeModal" class="close">&times;</span>
+        <div id="modal-body">
+        </div>
+    </div>
+</div>
+
+<script type="module" th:src="@{/js/services/patientServices.js}" defer></script>
+<script type="module" th:src="@{/js/doctorDashboard.js}" defer></script>
+</body>
+</html>
+
 <!-- 
 Step-by-Step Explanation of `doctorDashboard.html`
 This file defines the Doctor Dashboard interface, allowing doctors to view and manage their patient appointments, search records, and access patient prescriptions.
@@ -10,7 +76,7 @@ This file defines the Doctor Dashboard interface, allowing doctors to view and m
 
 2. Declare the Document Type
 
-   * Use `<!DOCTYPE html>` to define the document as an HTML5 file for consistent behavior across modern browsers.
+   * Use `<!DOCTYPE HTML>` to define the document as an HTML5 file for consistent behavior across modern browsers.
 
 3. Begin the HTML Document with Thymeleaf Namespace
 
