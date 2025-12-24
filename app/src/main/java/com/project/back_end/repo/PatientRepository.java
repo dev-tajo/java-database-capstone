@@ -3,6 +3,7 @@ package com.project.back_end.repo;
 
 import com.project.back_end.models.Patient;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
 // 1. Extend JpaRepository:
@@ -19,6 +20,13 @@ import org.springframework.stereotype.Repository;
 public interface PatientRepository extends JpaRepository<Patient, Long> {
 
 // 2. Custom Query Methods:
+
+//    - **findByNameLike**:
+//      - This method retrieves a Patient by their name.
+//      - Return type: Patient
+//      - Parameters: String name
+    @Query("SELECT p FROM Patient p WHERE p.name LIKE CONCAT('%', :name, '%')")
+    Patient findByNameLike(String name);
 
 //    - **findByEmail**:
 //      - This method retrieves a Patient by their email address.
