@@ -1,5 +1,7 @@
 package com.project.back_end.services;
 
+import com.project.back_end.models.Doctor;
+import com.project.back_end.models.Patient;
 import com.project.back_end.repo.AdminRepository;
 import com.project.back_end.repo.DoctorRepository;
 import com.project.back_end.repo.PatientRepository;
@@ -108,5 +110,34 @@ public class TokenService {
             return false;
         }
     }
+
+    // helper methods
+
+    public String generateTokenForDoctor(Long doctorId) {
+        return generateToken("doctor_" + doctorId);
+    }
+
+    public String extractEmail(String token) {
+        return extractIdentifier(token);
+    }
+
+    public Long getPatientIdFromToken(String token) {
+        String identifier = extractIdentifier(token);
+        if (identifier == null) {
+            return null;
+        }
+        Patient patient = patientRepository.findByEmail(identifier);
+        return (patient != null ? patient.getId() : null);
+    }
+
+    public Long getDoctorIdFromToken(String token) {
+        String identifier = extractIdentifier(token);
+        if (identifier == null) {
+            return null;
+        }
+        Doctor doctor = doctorRepository.findByEmail(identifier);
+        return (doctor != null ? doctor.getId() : null);
+    }
+
 
 }

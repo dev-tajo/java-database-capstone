@@ -90,7 +90,7 @@ public class Doctor {
     // 7. 'availableTimes' field:
 //    - Type: private List<String>
 //    - Description:
-//      - Represents the available times for the doctor in a list of time slots.
+//      - Represents the available times for the doctor (on each day) in a list of time slots.
 //      - Each time slot is represented as a string (e.g., "09:00-10:00", "10:00-11:00").
 //      - The @ElementCollection annotation ensures that the list of time slots is stored as a separate collection in the database.
     @ElementCollection

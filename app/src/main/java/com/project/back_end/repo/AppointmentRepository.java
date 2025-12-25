@@ -109,4 +109,13 @@ public interface AppointmentRepository extends JpaRepository<Appointment, Long> 
 // 3. @Modifying and @Transactional annotations:
 //    - The @Modifying annotation is used to indicate that the method performs a modification operation (like DELETE or UPDATE).
 //    - The @Transactional annotation ensures that the modification is done within a transaction, meaning that if any exception occurs, the changes will be rolled back.
+
+// additional needed methods for service
+
+    // check whether the slot is already taken for a doctor
+    boolean existsByDoctorIdAndAppointmentTime(Long doctorId, LocalDateTime appointmentTime);
+
+    // check whether the slot is already taken for a doctor, excluding a specific appointment (for update)
+    boolean existsByDoctorIdAndAppointmentTimeAndIdNot(Long doctorId, LocalDateTime appointmentTime, Long id);
+
 }
