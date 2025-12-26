@@ -5,6 +5,7 @@ import com.project.back_end.models.Appointment;
 import com.project.back_end.models.Doctor;
 import com.project.back_end.repo.AppointmentRepository;
 import com.project.back_end.repo.DoctorRepository;
+import io.micrometer.common.util.StringUtils;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -170,7 +171,7 @@ public class DoctorService {
     @Transactional
     public Map<String, Object> findDoctorByName(String name) {
         Map<String, Object> result = new HashMap<>();
-        List<Doctor> doctors = doctorRepository.findByNameLike("%" + name + "%");
+        List<Doctor> doctors = doctorRepository.findByNameLike(name);
         result.put("doctors", doctors);
         // todo: Ensure that available times are eagerly loaded for the doctors.
         return result;
@@ -181,10 +182,10 @@ public class DoctorService {
 //    - The method fetches doctors matching the name and specialty criteria, then filters them based on their availability during the specified time period.
 //    - Instruction: Ensure proper filtering based on both the name and specialty as well as the specified time period.
     @Transactional
-    public Map<String, Object> filterDoctorsByNameSpecialtyAndTime(String name, String specialty, String timeSlot) {
+    public Map<String, Object> filterDoctorsByNameSpecialtyAndTime(String name, String specialty, String amOrPm) {
         List<Doctor> doctors = doctorRepository.findByNameContainingIgnoreCaseAndSpecialtyIgnoreCase(name, specialty);
         Map<String, Object> result = new HashMap<>();
-        result.put("doctors", filterDoctorsByTime(doctors, timeSlot));
+        result.put("doctors", filterDoctorsByTime(doctors, amOrPm));
         return result;
     }
 
@@ -192,7 +193,7 @@ public class DoctorService {
 //    - Filters a list of doctors based on whether their available times match the specified time period (AM/PM).
 //    - This method processes a list of doctors and their available times to return those that fit the time criteria.
 //    - Instruction: Ensure that the time filtering logic correctly handles both AM and PM time slots and edge cases.
-private List<Doctor> filterDoctorsByTime(List<Doctor> doctors, String timeSlot) {
+private List<Doctor> filterDoctorsByTime(List<Doctor> doctors, String amOrPm) {
     return doctors.stream().filter(d -> {
         final List<String> availableTimeSlots = d.getAvailableTimes();
         if (availableTimeSlots == null) {
@@ -200,14 +201,17 @@ private List<Doctor> filterDoctorsByTime(List<Doctor> doctors, String timeSlot) 
         }
         return availableTimeSlots.stream().anyMatch(timeSlotString -> {
             try {
-                // timeSlotString format like "09:00-10:00" → take start time before '-'
+                // timeSlotString format like "09:00-10:00" : take start time before '-'
                 String start = timeSlotString.contains("-") ? timeSlotString.split("-")[0] : timeSlotString;
                 java.time.LocalTime startTime = java.time.LocalTime.parse(start);
                 // todo: consider end (e.g. slot with more than 1 hour)
-                // todo: needed to check for AM/PM ?
-                return start.toLowerCase().contains("am")
-                        ? startTime.isBefore(LocalTime.NOON)
-                        : startTime.isAfter(LocalTime.NOON);
+                if (StringUtils.isBlank(amOrPm)) {
+                    return true; // not specified whether AM or PM : all slots allowed
+                } else {
+                    return (amOrPm.toLowerCase().contains("am") ? startTime.isBefore(LocalTime.NOON) :
+                            (amOrPm.toLowerCase().contains("pm") && (startTime.isAfter(LocalTime.NOON)
+                             || startTime.equals(LocalTime.of(12, 0)))));
+                }
             } catch (Exception e) {
                 return false;
             }
@@ -220,10 +224,10 @@ private List<Doctor> filterDoctorsByTime(List<Doctor> doctors, String timeSlot) 
 //    - Fetches doctors based on partial name matching and filters the results to include only those available during the specified time period.
 //    - Instruction: Ensure that the method correctly filters doctors based on the given name and time of day (AM/PM).
 @Transactional
-public Map<String, Object> filterDoctorByNameAndTime(String name, String timeSlot) {
-    List<Doctor> doctors = doctorRepository.findByNameLike("%" + name + "%");
+public Map<String, Object> filterDoctorByNameAndTime(String name, String amOrPm) {
+    List<Doctor> doctors = doctorRepository.findByNameLike(name);
     Map<String, Object> result = new HashMap<>();
-    result.put("doctors", filterDoctorsByTime(doctors, timeSlot));
+    result.put("doctors", filterDoctorsByTime(doctors, amOrPm));
     return result;
 }
 
@@ -244,10 +248,10 @@ public Map<String, Object> filterDoctorByNameAndTime(String name, String timeSlo
 //    - Fetches doctors based on the specified specialty and filters them based on their available time slots for AM/PM.
 //    - Instruction: Ensure the time filtering is accurately applied based on the given specialty and time period (AM/PM).
     @Transactional
-    public Map<String, Object> filterDoctorByTimeAndSpecialty(String specialty, String timeSlot) {
+    public Map<String, Object> filterDoctorByTimeAndSpecialty(String specialty, String amOrPm) {
         List<Doctor> doctors = doctorRepository.findBySpecialtyIgnoreCase(specialty);
         Map<String, Object> result = new HashMap<>();
-        result.put("doctors", filterDoctorsByTime(doctors, timeSlot));
+        result.put("doctors", filterDoctorsByTime(doctors, amOrPm));
         return result;
     }
 
@@ -268,10 +272,10 @@ public Map<String, Object> filterDoctorByNameAndTime(String name, String timeSlo
 //    - The method checks all doctors' available times and returns those available during the specified time period.
 //    - Instruction: Ensure proper filtering logic to handle AM/PM time periods.
     @Transactional
-    public Map<String, Object> filterDoctorsByTime(String timeSlot) {
+    public Map<String, Object> filterDoctorsByTime(String amOrPm) {
         List<Doctor> doctors = doctorRepository.findAll();
         Map<String, Object> result = new HashMap<>();
-        result.put("doctors", filterDoctorsByTime(doctors, timeSlot));
+        result.put("doctors", filterDoctorsByTime(doctors, amOrPm));
         return result;
     }
 
