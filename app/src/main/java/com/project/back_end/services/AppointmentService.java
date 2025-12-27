@@ -82,7 +82,7 @@ public class AppointmentService {
     }
 
 // 5. **Update Appointment Method**:
-//    - This method is used to update an existing appointment based on its ID.
+//    - This method is used to update an existinge.printStackTrace appointment based on its ID.
 //    - It validates whether the patient ID matches, checks if the appointment is available for updating, and ensures that the doctor is available at the specified time.
 //    - If the update is successful, it saves the appointment; otherwise, it returns an appropriate error message.
 //    - Instruction: Ensure proper validation and error handling is included for appointment updates.

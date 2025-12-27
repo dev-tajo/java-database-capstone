@@ -100,7 +100,9 @@ public class AppointmentDTO {
 //    - The constructor accepts all the relevant fields for the AppointmentDTO, including simplified fields for the doctor and patient (ID, name, etc.).
 //    - It also calculates custom fields: 'appointmentDate', 'appointmentTimeOnly', and 'endTime' based on the 'appointmentTime' field.
 
-    public AppointmentDTO(Long id, Long doctorId, String doctorName, Long patientId, String patientName, String patientEmail, String patientPhone, String patientAddress, LocalDateTime appointmentTime, int status) {
+    public AppointmentDTO(Long id, Long doctorId, String doctorName,
+                          Long patientId, String patientName, String patientEmail, String patientPhone, String patientAddress,
+                          LocalDateTime appointmentTime, int status) {
         this.id = id;
         this.doctorId = doctorId;
         this.doctorName = doctorName;
