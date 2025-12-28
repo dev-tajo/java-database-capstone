@@ -2,6 +2,7 @@ package com.project.back_end.services;
 
 import com.project.back_end.models.Prescription;
 import com.project.back_end.repo.PrescriptionRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -25,6 +26,7 @@ public class PrescriptionService {
 //    - The `PrescriptionService` class depends on the `PrescriptionRepository` to interact with the database.
 //    - It is injected through the constructor, ensuring proper dependency management and enabling testing.
 //    - Instruction: Constructor injection is a good practice, ensuring that all necessary dependencies are available at the time of service initialization.
+    @Autowired
     public PrescriptionService(PrescriptionRepository prescriptionRepository) {
         this.prescriptionRepository = prescriptionRepository;
     }

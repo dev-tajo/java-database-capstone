@@ -4,6 +4,7 @@ package com.project.back_end.controllers;
 import com.project.back_end.models.Appointment;
 import com.project.back_end.services.AppointmentService;
 import com.project.back_end.services.ServiceClass;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -26,7 +27,7 @@ public class AppointmentController {
 // 2. Autowire Dependencies:
 //    - Inject `AppointmentService` for handling the business logic specific to appointments.
 //    - Inject the general `Service` class, which provides shared functionality like token validation and appointment checks.
-
+    @Autowired
     public AppointmentController(AppointmentService appointmentService, ServiceClass service) {
         this.appointmentService = appointmentService;
         this.service = service;

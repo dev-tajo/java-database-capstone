@@ -5,6 +5,7 @@ import com.project.back_end.models.Appointment;
 import com.project.back_end.models.Patient;
 import com.project.back_end.repo.AppointmentRepository;
 import com.project.back_end.repo.PatientRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -32,7 +33,7 @@ public class PatientService {
 //    - The `PatientService` class has dependencies on `PatientRepository`, `AppointmentRepository`, and `TokenService`.
 //    - These dependencies are injected via the constructor to maintain good practices of dependency injection and testing.
 //    - Instruction: Ensure constructor injection is used for all the required dependencies.
-
+    @Autowired
     public PatientService(PatientRepository patientRepository, AppointmentRepository appointmentRepository, TokenService tokenService) {
         this.patientRepository = patientRepository;
         this.appointmentRepository = appointmentRepository;

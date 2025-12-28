@@ -8,6 +8,7 @@ import com.project.back_end.models.Patient;
 import com.project.back_end.repo.AdminRepository;
 import com.project.back_end.repo.DoctorRepository;
 import com.project.back_end.repo.PatientRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -34,7 +35,7 @@ public class ServiceClass {
 // 2. **Constructor Injection for Dependencies**
 // The constructor injects all required dependencies (TokenService, Repositories, and other Services). This approach promotes loose coupling, improves testability,
 // and ensures that all required dependencies are provided at object creation time.
-
+    @Autowired
     public ServiceClass(TokenService tokenService,
                    AdminRepository adminRepository,
                    DoctorRepository doctorRepository,

@@ -3,6 +3,7 @@ package com.project.back_end.controllers;
 
 import com.project.back_end.models.Admin;
 import com.project.back_end.services.ServiceClass;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -27,7 +28,7 @@ public class AdminController {
 //    - The service handles core logic related to admin validation and token checking.
 //    - This promotes cleaner code and separation of concerns between the controller and business logic layer.
 
-    // @Autowired
+    @Autowired
     public AdminController(ServiceClass service) {
         this.service = service;
     }

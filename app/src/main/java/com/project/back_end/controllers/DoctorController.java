@@ -5,6 +5,7 @@ import com.project.back_end.DTO.Login;
 import com.project.back_end.models.Doctor;
 import com.project.back_end.services.DoctorService;
 import com.project.back_end.services.ServiceClass;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -28,8 +29,8 @@ public class DoctorController {
 
 // 2. Autowire Dependencies:
 //    - Inject `DoctorService` for handling the core logic related to doctors (e.g., CRUD operations, authentication).
-//    - Inject the shared `Service` class for general-purpose features like token validation and filtering.
-    // @Autowired
+//    - Inject the shared `Service` class for general-purpose features like token validation and filtering
+    @Autowired
     public DoctorController(DoctorService doctorService, ServiceClass service) {
         this.doctorService = doctorService;
         this.service = service;
