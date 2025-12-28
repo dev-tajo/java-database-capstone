@@ -7,6 +7,7 @@ import com.project.back_end.services.ServiceClass;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.lang.Nullable;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Map;
@@ -38,11 +39,21 @@ public class PatientController {
 //    - If the token is valid, returns patient information; otherwise, returns an appropriate error message.
     @GetMapping("/{token}")
     public ResponseEntity<Map<String, Object>> getPatientDetails(@PathVariable String token) {
-        ResponseEntity<Map<String, String>> tokenCheck = service.validateToken(token, "patient");
-        if (!tokenCheck.getStatusCode().is2xxSuccessful()) {
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED.value()).body(Map.of("error", tokenCheck.getBody().get("error"))); // UNAUTHORIZED.value() : 401
+        ResponseEntity<Map<String, Object>> responseIfTokenInvalid = getUnautorizedResponseIfTokenInvalid(token);
+        if (responseIfTokenInvalid != null) {
+            return responseIfTokenInvalid;
         }
         return patientService.getPatientDetails(token);
+    }
+
+    @Nullable
+    private ResponseEntity<Map<String, Object>> getUnautorizedResponseIfTokenInvalid(@PathVariable String token) {
+        ResponseEntity<Map<String, String>> tokenCheck = service.validateToken(token, "patient");
+        if (!tokenCheck.getStatusCode().is2xxSuccessful()) {
+            assert tokenCheck.getBody() != null;
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED.value()).body(Map.of("error", tokenCheck.getBody().get("error"))); // UNAUTHORIZED.value() : 401
+        }
+        return null;
     }
 
 // 4. Define the `createPatient` Method:
@@ -80,9 +91,9 @@ public class PatientController {
 //    - If valid, retrieves the patient's appointment data from `PatientService`; otherwise, returns a validation error.
     @GetMapping("/{token}/appointments")
     public ResponseEntity<Map<String, Object>> getPatientAppointments(@PathVariable String token) {
-        ResponseEntity<Map<String, String>> tokenCheck = service.validateToken(token, "patient");
-        if (!tokenCheck.getStatusCode().is2xxSuccessful()) {
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED.value()).body(Map.of("error", tokenCheck.getBody().get("error"))); // UNAUTHORIZED.value() : 401
+        ResponseEntity<Map<String, Object>> responseIfTokenInvalid = getUnautorizedResponseIfTokenInvalid(token);
+        if (responseIfTokenInvalid != null) {
+            return responseIfTokenInvalid;
         }
         return patientService.getPatientAppointment(null, token); // `null` car patientService utilise le token pour ID
     }
@@ -96,9 +107,9 @@ public class PatientController {
     public ResponseEntity<Map<String, Object>> filterPatientAppointments(@PathVariable String condition,
                                                                          @PathVariable String name,
                                                                          @PathVariable String token) {
-        ResponseEntity<Map<String, String>> tokenCheck = service.validateToken(token, "patient");
-        if (!tokenCheck.getStatusCode().is2xxSuccessful()) {
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED.value()).body(Map.of("error", tokenCheck.getBody().get("error"))); // UNAUTHORIZED.value() : 401
+        ResponseEntity<Map<String, Object>> responseIfTokenInvalid = getUnautorizedResponseIfTokenInvalid(token);
+        if (responseIfTokenInvalid != null) {
+            return responseIfTokenInvalid;
         }
         return service.filterPatient(condition, name, token);
     }
