@@ -8,6 +8,10 @@ import com.project.back_end.repo.PatientRepository;
 
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.security.Keys;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
@@ -23,16 +27,19 @@ import java.util.Date;
 @Component
 public class TokenService {
 
+    public static final int JWT_EXPIRATION_MS_VALUE_DEFAULT = 86400000;
+
     private final AdminRepository adminRepository;
     private final DoctorRepository doctorRepository;
     private final PatientRepository patientRepository;
 
+    private final Logger log = LoggerFactory.getLogger( getClass() );
+
     @Value("$(jwt.secret")
     private String jwtSecret;
 
-    @Value("$(jwt.expiration)")
-    private long jwtExpirationMs;
-
+    @Value(value="$(jwt.expiration)")
+    private String jwtExpirationMs;
 
     // 2. **Constructor Injection for Dependencies**
 // The constructor injects dependencies for `AdminRepository`, `DoctorRepository`, and `PatientRepository`,
@@ -64,7 +71,13 @@ public class TokenService {
 
     public String generateToken(String identifier) {
         Date now = new Date();
-        Date expireDate = new Date(now.getTime() + jwtExpirationMs);
+        long jwtExpirationMs_value = JWT_EXPIRATION_MS_VALUE_DEFAULT;
+        try {
+            jwtExpirationMs_value = Long.parseLong(jwtExpirationMs);
+        } catch (NumberFormatException e) {
+            log.error("got NumberFormatException for jwt.expiration to long, use default: 1h as ms");
+        }
+        Date expireDate = new Date(now.getTime() + jwtExpirationMs_value);
         return Jwts.builder()
                 .subject(identifier)
                 .issuedAt(now)
