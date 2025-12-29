@@ -70,7 +70,7 @@ public class PatientController {
         if (created == 1) {
             return ResponseEntity.ok(Map.of("success", "Signup successful"));
         } else {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR.value()).body(Map.of("error", "Internal server error")); // INTERNAL_SERVER_ERROR.value : 500
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR.value()).body(Map.of("error", "Could not create patient")); // INTERNAL_SERVER_ERROR.value : 500
         }
     }
 

@@ -56,7 +56,7 @@ public class PatientService {
             patientRepository.save(patient);
             return 1;
         } catch (Exception e) {
-            log.error(Arrays.toString(e.getStackTrace()));
+            log.error("createPatient failed with exception {} : {}", e.getMessage(), Arrays.toString(e.getStackTrace()));
             return 0;
         }
     }
@@ -89,7 +89,7 @@ public class PatientService {
             response.put("appointments", appointments);
             return ResponseEntity.ok(response);
         } catch (Exception e) {
-            response.put("error", "Internal Server Error");
+            response.put("error", "Failed to get patient appointment");
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR.value()).body(response); // INTERNAL_SERVER_ERROR.value : 500
         }
     }
@@ -120,7 +120,7 @@ public class PatientService {
             response.put("appointments", appointments);
             return ResponseEntity.ok(response);
         } catch (Exception e) {
-            response.put("error", "Internal Server Error");
+            response.put("error", "Failed to filter by condition");
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR.value()).body(response); // INTERNAL_SERVER_ERROR.value : 500
         }
     }
@@ -141,7 +141,7 @@ public class PatientService {
             response.put("appointments", appointments);
             return ResponseEntity.ok(response);
         } catch (Exception e) {
-            response.put("error", "Internal Server Error");
+            response.put("error", "Failed to filter by doctor");
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR.value()).body(response); // INTERNAL_SERVER_ERROR.value : 500
         }
     }
@@ -172,7 +172,7 @@ public class PatientService {
             response.put("appointments", appointments);
             return ResponseEntity.ok(response);
         } catch (Exception e) {
-            response.put("error", "Internal Server Error");
+            response.put("error", "Failed to filter by doctor and condition");
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR.value()).body(response); // INTERNAL_SERVER_ERROR.value : 500
         }
     }
@@ -194,7 +194,7 @@ public class PatientService {
             response.put("patient", patient);
             return ResponseEntity.ok(response);
         } catch (Exception e) {
-            response.put("error", "Internal Server Error");
+            response.put("error", "Failed to get patient details");
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR.value()).body(response); // INTERNAL_SERVER_ERROR.value : 500
         }
     }
