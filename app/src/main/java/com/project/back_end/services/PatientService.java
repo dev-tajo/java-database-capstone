@@ -5,12 +5,17 @@ import com.project.back_end.models.Appointment;
 import com.project.back_end.models.Patient;
 import com.project.back_end.repo.AppointmentRepository;
 import com.project.back_end.repo.PatientRepository;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -28,6 +33,8 @@ public class PatientService {
     private final PatientRepository patientRepository;
     private final AppointmentRepository appointmentRepository;
     private final TokenService tokenService;
+
+    private final Logger log = LoggerFactory.getLogger( getClass() );
 
     // 2. **Constructor Injection for Dependencies**:
 //    - The `PatientService` class has dependencies on `PatientRepository`, `AppointmentRepository`, and `TokenService`.
@@ -49,7 +56,7 @@ public class PatientService {
             patientRepository.save(patient);
             return 1;
         } catch (Exception e) {
-            // todo: Logging e.g. e.printStackTrace();
+            log.error(Arrays.toString(e.getStackTrace()));
             return 0;
         }
     }

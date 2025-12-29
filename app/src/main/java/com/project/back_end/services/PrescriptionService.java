@@ -2,11 +2,16 @@ package com.project.back_end.services;
 
 import com.project.back_end.models.Prescription;
 import com.project.back_end.repo.PrescriptionRepository;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -21,6 +26,8 @@ import java.util.Map;
 public class PrescriptionService {
 
     private final PrescriptionRepository prescriptionRepository;
+
+    private final Logger log = LoggerFactory.getLogger( getClass() );
 
 // 2. **Constructor Injection for Dependencies**:
 //    - The `PrescriptionService` class depends on the `PrescriptionRepository` to interact with the database.
@@ -51,7 +58,7 @@ public class PrescriptionService {
             response.put("message", "Prescription saved");
             return ResponseEntity.status(HttpStatus.CREATED.value()).body(response); // CREATED.value : 201
         } catch (Exception e) {
-            // todo: Logging e.g. e.printStackTrace();
+            log.error(Arrays.toString(e.getStackTrace()));
             response.put("message", "Error saving prescription");
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR.value()).body(response); // INTERNAL_SERVER_ERROR.value : 500
         }
@@ -69,7 +76,7 @@ public class PrescriptionService {
             response.put("prescriptions", prescriptions);
             return ResponseEntity.ok(response);
         } catch (Exception e) {
-            // todo: Logging e.g. e.printStackTrace();
+            log.error(Arrays.toString(e.getStackTrace()));
             response.put("error", "Error retrieving prescription");
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR.value()).body(response); // INTERNAL_SERVER_ERROR.value : 500
         }

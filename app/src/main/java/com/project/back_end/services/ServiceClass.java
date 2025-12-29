@@ -8,12 +8,18 @@ import com.project.back_end.models.Patient;
 import com.project.back_end.repo.AdminRepository;
 import com.project.back_end.repo.DoctorRepository;
 import com.project.back_end.repo.PatientRepository;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
+
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -31,6 +37,8 @@ public class ServiceClass {
     private final PatientRepository patientRepository;
     private final DoctorService doctorService;
     private final PatientService patientService;
+
+    private final Logger log = LoggerFactory.getLogger( getClass() );
 
 // 2. **Constructor Injection for Dependencies**
 // The constructor injects all required dependencies (TokenService, Repositories, and other Services). This approach promotes loose coupling, improves testability,
@@ -133,7 +141,7 @@ public class ServiceClass {
                 return 0; // not available
             }
         } catch (Exception e) {
-            // todo: Logging e.g. e.printStackTrace();
+            log.error(Arrays.toString(e.getStackTrace()));
             return 0; // error
         }
     }

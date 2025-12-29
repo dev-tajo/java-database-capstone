@@ -7,6 +7,9 @@ import com.project.back_end.repo.AppointmentRepository;
 import com.project.back_end.repo.DoctorRepository;
 import com.project.back_end.repo.PatientRepository;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -15,6 +18,8 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -32,6 +37,8 @@ public class AppointmentService {
     private final PatientRepository patientRepository;
     private final DoctorRepository doctorRepository;
     private final TokenService tokenService;    // private final @Lazy TokenService tokenService;
+
+    private final Logger log = LoggerFactory.getLogger( getClass() );
 
 // 2. **Constructor Injection for Dependencies**:
 //    - The `AppointmentService` class requires several dependencies like `AppointmentRepository`, `Service`, `TokenService`, `PatientRepository`, and `DoctorRepository`.
@@ -77,7 +84,7 @@ public class AppointmentService {
             appointmentRepository.save(appointment);
             return 1;
         } catch (Exception e) {
-            // todo: Logging e.g. e.printStackTrace();
+            log.error(Arrays.toString(e.getStackTrace()));
             return 0;
         }
     }
@@ -127,7 +134,7 @@ public class AppointmentService {
             return ResponseEntity.ok(response);
 
         } catch (Exception e) {
-            // todo: Logging e.g. e.printStackTrace();
+            log.error(Arrays.toString(e.getStackTrace()));
             response.put("error", "Failed to update appointment");
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR.value()).body(response); // INTERNAL_SERVER_ERROR.value : 500
         }
