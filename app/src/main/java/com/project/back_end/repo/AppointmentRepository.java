@@ -3,6 +3,7 @@ package com.project.back_end.repo;
 import com.project.back_end.models.Appointment;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -31,6 +32,11 @@ public interface AppointmentRepository extends JpaRepository<Appointment, Long> 
 //      - Return type: List<Appointment>
 //      - Parameters: Long doctorId, LocalDateTime start, LocalDateTime end
 //      - It uses a LEFT JOIN to fetch the doctor’s available times along with the appointments.
+    @Query("SELECT a FROM Appointment a " +
+            "LEFT JOIN FETCH a.doctor d " +
+            "LEFT JOIN FETCH d.availableTimes " +
+            "WHERE d.id = :doctorId AND a.appointmentTime " +
+            "BETWEEN :start AND :end")
     List<Appointment> findByDoctorIdAndAppointmentTimeBetween(Long doctorId, LocalDateTime start, LocalDateTime end);
 
 //    - **findByDoctorIdAndPatientNameContainingIgnoreCaseAndAppointmentTimeBetween**:
@@ -38,6 +44,12 @@ public interface AppointmentRepository extends JpaRepository<Appointment, Long> 
 //      - It performs a LEFT JOIN to fetch both the doctor and patient details along with the appointment times.
 //      - Return type: List<Appointment>
 //      - Parameters: Long doctorId, String patientName, LocalDateTime start, LocalDateTime end
+    @Query("SELECT a FROM Appointment a " +
+            "LEFT JOIN FETCH a.doctor d " +
+            "LEFT JOIN FETCH a.patient p " +
+            "WHERE d.id = :doctorId " +
+            "      AND LOWER(p.name) LIKE LOWER(CONCAT('%', :patientName, '%')) " +
+            "      AND a.appointmentTime BETWEEN :start AND :end")
     List<Appointment> findByDoctorIdAndPatientNameContainingIgnoreCaseAndAppointmentTimeBetween(Long doctorId, String patientName, LocalDateTime start, LocalDateTime end);
 
 //    - **deleteAllByDoctorId**:
@@ -47,6 +59,7 @@ public interface AppointmentRepository extends JpaRepository<Appointment, Long> 
 //      - Parameters: Long doctorId
     @Modifying
     @Transactional
+    @Query("DELETE FROM Appointment a WHERE a.doctor.id = :doctorId")
     void deleteAllByDoctorId(Long doctorId);
 
 //    - **findByPatientId**:
@@ -65,23 +78,44 @@ public interface AppointmentRepository extends JpaRepository<Appointment, Long> 
 //      - This method retrieves appointments based on a doctor’s name (using a LIKE query) and the patient’s ID.
 //      - Return type: List<Appointment>
 //      - Parameters: String doctorName, Long patientId
- //    List<Appointment> filterByDoctorNameAndPatientId(String doctorName, Long patientId);
+    @Query("SELECT a FROM Appointment a " +
+            "LEFT JOIN FETCH a.doctor d " +
+            "LEFT JOIN FETCH a.patient p " +
+            "WHERE LOWER(d.name) LIKE LOWER(CONCAT('%', :doctorName, '%')) " +
+            "      AND p.id = :patientId")
+    List<Appointment> filterByDoctorNameAndPatientId(String doctorName, Long patientId);
 
 //    - **filterByDoctorNameAndPatientIdAndStatus**:
 //      - This method retrieves appointments based on a doctor’s name (using a LIKE query), patient’s ID, and a specific appointment status.
 //      - Return type: List<Appointment>
 //      - Parameters: String doctorName, Long patientId, int status
- //    List<Appointment> filterByDoctorNameAndPatientIdAndStatus(String doctorName, Long patientId, int status);
+    @Query("SELECT a FROM Appointment a " +
+            "LEFT JOIN FETCH a.doctor d " +
+            "LEFT JOIN FETCH a.patient p " +
+            "WHERE LOWER(d.name) LIKE LOWER(CONCAT('%', :doctorName, '%')) " +
+            "      AND p.id = :patientId " +
+            "      AND a.status = :status")
+    List<Appointment> filterByDoctorNameAndPatientIdAndStatus(String doctorName, Long patientId, int status);
 
 //    - **updateStatus**:
 //      - This method updates the status of a specific appointment based on its ID.
 //      - Return type: void
 //      - Parameters: int status, long id
- //    @Modifying
- //    @Transactional
- //    void updateStatus(int status, long id);
+    @Modifying
+    @Transactional
+    @Query("UPDATE Appointment a SET a.status = :status WHERE a.id = :id")
+    void updateStatus(int status, long id);
 
 // 3. @Modifying and @Transactional annotations:
 //    - The @Modifying annotation is used to indicate that the method performs a modification operation (like DELETE or UPDATE).
 //    - The @Transactional annotation ensures that the modification is done within a transaction, meaning that if any exception occurs, the changes will be rolled back.
+
+// additional needed methods for service
+
+    // check whether the slot is already taken for a doctor
+    boolean existsByDoctorIdAndAppointmentTime(Long doctorId, LocalDateTime appointmentTime);
+
+    // check whether the slot is already taken for a doctor, excluding a specific appointment (for update)
+    boolean existsByDoctorIdAndAppointmentTimeAndIdNot(Long doctorId, LocalDateTime appointmentTime, Long id);
+
 }

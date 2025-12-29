@@ -1,11 +1,14 @@
 package com.project.back_end.services;
 
+import com.project.back_end.models.Doctor;
+import com.project.back_end.models.Patient;
 import com.project.back_end.repo.AdminRepository;
 import com.project.back_end.repo.DoctorRepository;
 import com.project.back_end.repo.PatientRepository;
 
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.security.Keys;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
@@ -35,7 +38,7 @@ public class TokenService {
 // The constructor injects dependencies for `AdminRepository`, `DoctorRepository`, and `PatientRepository`,
 // allowing the service to interact with the database and validate users based on their role (admin, doctor, or patient).
 // Constructor injection ensures that the class is initialized with all required dependencies, promoting immutability and making the class testable.
-
+    @Autowired
     public TokenService(AdminRepository adminRepository, DoctorRepository doctorRepository, PatientRepository patientRepository) {
         this.adminRepository = adminRepository;
         this.doctorRepository = doctorRepository;
@@ -108,5 +111,34 @@ public class TokenService {
             return false;
         }
     }
+
+    // helper methods
+
+    public String generateTokenForDoctor(Long doctorId) {
+        return generateToken("doctor_" + doctorId);
+    }
+
+    public String extractEmail(String token) {
+        return extractIdentifier(token);
+    }
+
+    public Long getPatientIdFromToken(String token) {
+        String identifier = extractIdentifier(token);
+        if (identifier == null) {
+            return null;
+        }
+        Patient patient = patientRepository.findByEmail(identifier);
+        return (patient != null ? patient.getId() : null);
+    }
+
+    public Long getDoctorIdFromToken(String token) {
+        String identifier = extractIdentifier(token);
+        if (identifier == null) {
+            return null;
+        }
+        Doctor doctor = doctorRepository.findByEmail(identifier);
+        return (doctor != null ? doctor.getId() : null);
+    }
+
 
 }

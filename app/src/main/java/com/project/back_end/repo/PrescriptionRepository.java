@@ -2,6 +2,7 @@ package com.project.back_end.repo;
 
 import com.project.back_end.models.Prescription;
 import org.springframework.data.mongodb.repository.MongoRepository;
+// import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
@@ -11,7 +12,7 @@ import java.util.List;
 //    - This allows the repository to perform operations like save, delete, update, and find without needing to implement these methods manually.
 //    - MongoRepository is tailored for working with MongoDB, unlike JpaRepository which is used for relational databases.
 // Example: public interface PrescriptionRepository extends MongoRepository<Prescription, String> {}
-
+// @Repository
 public interface PrescriptionRepository extends MongoRepository<Prescription, String> {
 
 // 2. Custom Query Method:
