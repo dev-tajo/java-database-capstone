@@ -77,7 +77,6 @@ public class PatientService {
                 response.put("error", "Patient not found");
                 return ResponseEntity.status(HttpStatus.NOT_FOUND.value()).body(response); // NOT_FOUND.value : 404
             }
-            // todo: check param id versus token->patient->patientId
             Long patientId = patient.getId();
             if (patientId != id) {
                 response.put("error", "Patient mismatch");

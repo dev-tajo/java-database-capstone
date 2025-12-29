@@ -7,6 +7,7 @@ import com.project.back_end.repo.AppointmentRepository;
 import com.project.back_end.repo.DoctorRepository;
 import io.micrometer.common.util.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -130,8 +131,8 @@ public class DoctorService {
 //    - Fetches all doctors from the database. It is marked with `@Transactional` to ensure that the collection is properly loaded.
 //    - Instruction: Ensure that the collection is eagerly loaded, especially if dealing with lazy-loaded relationships (e.g., available times). 
     @Transactional
+    @EntityGraph(attributePaths = {"availableTimes"})
     public List<Doctor> getDoctors() {
-        // todo: Ensure that the collection is eagerly loaded, especially if dealing with lazy-loaded relationships
         return doctorRepository.findAll();
     }
 
@@ -173,14 +174,14 @@ public class DoctorService {
 // 10. **findDoctorByName Method**:
 //    - Finds doctors based on partial name matching and returns the list of doctors with their available times.
 //    - This method is annotated with `@Transactional` to ensure that the database query and data retrieval are properly managed within a transaction.
-//    - Instruction: Ensure that available times are eagerly loaded for the doctors.
+//    - Instruction: Ensure that available times are eagerly loaded for the doctors. : use @EntityGraph(attributePaths = {"availableTimes"})
     // todo: maybe method should named as findDoctorsByName ?
+    @EntityGraph(attributePaths = {"availableTimes"})
     @Transactional
     public Map<String, Object> findDoctorByName(String name) {
         Map<String, Object> result = new HashMap<>();
         List<Doctor> doctors = doctorRepository.findByNameLike(name);
         result.put("doctors", doctors);
-        // todo: Ensure that available times are eagerly loaded for the doctors.
         return result;
     }
 
