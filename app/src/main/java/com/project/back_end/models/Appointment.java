@@ -211,5 +211,19 @@ public class Appointment {
                 throw new IllegalArgumentException("unknown status value: " + status);
         }
     }
+
+    @Override
+    public String toString() {
+        return "Appointment{" +
+                "id=" + id +
+                ", doctor=" + doctor +
+                ", patient=" + patient +
+                ", appointmentTime=" + appointmentTime +
+                ", appointmentDuration=" + appointmentDuration +
+                ", reason='" + reason + '\'' +
+                ", result='" + result + '\'' +
+                ", status=" + status +
+                '}';
+    }
 }
 
