@@ -182,5 +182,20 @@ public class Doctor {
     public void setMedicalLicense(String medicalLicense) {
         this.medicalLicense = medicalLicense;
     }
+
+    @Override
+    public String toString() {
+        return "Doctor{" +
+                "id=" + id +
+                ", password='" + password + '\'' +
+                ", email='" + email + '\'' +
+                ", phone='" + phone + '\'' +
+                ", name='" + name + '\'' +
+                ", academicDegree='" + academicDegree + '\'' +
+                ", medicalLicense='" + medicalLicense + '\'' +
+                ", specialty='" + specialty + '\'' +
+                ", availableTimes=" + availableTimes +
+                '}';
+    }
 }
 

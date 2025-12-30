@@ -56,7 +56,7 @@ public class PatientService {
             patientRepository.save(patient);
             return 1;
         } catch (Exception e) {
-            log.error("createPatient failed with exception {} : {}", e.getMessage(), Arrays.toString(e.getStackTrace()));
+            log.error("createPatient failed {} : {} : {}", patient, e.getMessage(), Arrays.toString(e.getStackTrace()));
             return 0;
         }
     }

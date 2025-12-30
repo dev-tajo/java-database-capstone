@@ -134,7 +134,7 @@ public class AppointmentService {
             return ResponseEntity.ok(response);
 
         } catch (Exception e) {
-            log.error(Arrays.toString(e.getStackTrace()));
+            log.error("update appointment failed {} : {} : {}", appointment, e.getMessage(), Arrays.toString(e.getStackTrace()));
             response.put("error", "Failed to update appointment");
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR.value()).body(response); // INTERNAL_SERVER_ERROR.value : 500
         }

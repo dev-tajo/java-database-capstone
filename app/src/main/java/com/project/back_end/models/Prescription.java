@@ -141,4 +141,17 @@ public class Prescription {
     public void setPrescriptionDate(LocalDate prescriptionDate) {
         this.prescriptionDate = Objects.requireNonNullElseGet(prescriptionDate, LocalDate::now);
     }
+
+    @Override
+    public String toString() {
+        return "Prescription{" +
+                "id='" + id + '\'' +
+                ", patientName='" + patientName + '\'' +
+                // ", appointmentId=" + appointmentId +
+                ", medication='" + medication + '\'' +
+                // ", dosage='" + dosage + '\'' +
+                // ", doctorNotes='" + doctorNotes + '\'' +
+                ", prescriptionDate=" + prescriptionDate +
+                '}';
+    }
 }
